@@ -1,0 +1,24 @@
+<div style="padding: 0px 30px 30px 30px;">
+
+<h3> Les paramètres de mon compte </h3>
+	
+	<?php
+	if(isset($this->msg)){
+		echo "<p><ul class='errors'><li class='arial_sml'>".$this->msg."</li></ul></p>";
+	}
+	?>
+					<p>
+					Cet espace vous permet de modifier vos informations personnelles et de règler les paramètres de votre compte utlisateur, comme l'envoi des emails d'actualités Aloa ou l'organisation des favoris.
+					<h3> Modifier mes informations personnelles </h3>
+					<?php echo $this->persoform; ?>
+					<p>
+					<h3> Changer de mot de passe </h3>
+					<a href="<?php echo $this->url(array('controller'=>'login', 'action' => 'mdpoublie'),'default',true) ?>">Je souhaite modifier mon mot de passe.</a>
+					</p>
+					<h3> Modifier mes alertes Aloa</h3>
+					<?php echo $this->cnfform; ?>
+					
+				</p>
+</div>
+
+					<div class="lrgspc"></div>

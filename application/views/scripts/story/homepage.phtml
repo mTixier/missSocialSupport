@@ -1,0 +1,26 @@
+<div class="homepage_block">
+
+			<div class="mnu_block">
+			<a href="<?php echo $this->url(array('controller'=>'story'),'default',true); ?>"><img src="/images/mnu_rt.gif" class="mnu_picto"></a>
+					<div class="mnu_pres">
+					<h4><a href="<?php echo $this->url(array('controller'=>'story'),'default',true); ?>">Témoigner</a></h4>
+					<p>Partagez une anecdote, votre expérience et invitez la communauté à s'exprimer sur un sujet qui vous tient à coeur en  lançant un tour de table. Vous pouvez aussi simplement rejoindre un tour de table existant pour partager votre expérience, vos opinions et votre histoire.</p>
+					
+					
+					<div class="arial_sml_b">Dernière contribution :</div>
+					
+					<?php
+						if($this->lastcontrib->count() > 0){
+							$last = $this->partial("p_contrib_events.phtml", array('contribs' => $this->lastcontrib, 'disp_type' => 0, 'disp_user' => 1));
+						}else{
+							$last = "<p class='arial_sml'>Aucun sujet de témoignage n'a encore été proposé.<img src='/images/evt_story.png'><a href='".$this->url(array('controller'=>'story', 'action' => 'index'),'default',true)."#contribuer'>Soyez le premier à participer.</a></p>";
+						}
+						echo $last;
+					?>
+
+
+					</div>
+			</div>
+			
+</div>
+

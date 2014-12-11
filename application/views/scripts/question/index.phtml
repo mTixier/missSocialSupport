@@ -1,0 +1,78 @@
+<div style="padding: 0px 30px 30px 30px;">
+<div><img src="/images/mnu_qr_gnrl.png" style="float:left;width:150px;padding-right:10px;"/>
+	<div><h3>Questions & Réponses</h3>
+	<p>
+	Recherchez ici votre question parmi toutes celles posées par les membres de la communauté. Si vous n'avez pas encore une question précise en tête quelques mots suffiront à notre moteur de recherche.</p>
+	<form name="recherche_form" method='post' action="<?php echo $this->url(array('controller'=>'question', 'action' => 'search'),'default',true); ?>">
+	<p><input name="rqt" style="width:300px"/>&nbsp;?
+	<input type="submit" value="Rechercher"/></p>
+	</form>
+	
+	<?php 
+	// Lien bris de glace pour poser directement sa question sans faire de recherche 
+	if(Zend_Session::namespaceIsset('registred')){
+	$user_session = new Zend_Session_Namespace('registred');
+	}else{
+		$user_session = null;
+	}
+
+	if($user_session != null){
+		echo "<div><a href='".$this->url(array('controller'=>'question', 'action' => 'ask'),'default',true)."'>Poser directement ma question.</a></div>";
+	}
+	?>
+	
+
+	</div>
+</div>
+	<!--
+	<div>
+	<p><a href="<?php //echo $this->url(array('controller'=>'question', 'action' => 'all'),'default',true); ?>">Voir toutes les questions.</a></p>	
+	</div>
+	-->
+	<div class="evtlist">
+			<h4>Apporter vos réponses et conseils</h4>
+
+				<?php
+				if(count($this->noanswer) >0){
+					echo $this->partial("p_contrib_events.phtml", array('contribs' => $this->noanswer, 'disp_type' => 0, 'disp_user' => 1));	
+					//print_r($this->noanswer);
+				}else{
+					echo "<p class='arial_sml'>Aucune question n'a encore été posée.<img src='/images/evt_question.png'><a href='".$this->url(array('controller'=>'question', 'action' => 'ask'),'default',true)."'>Soyez le premier à participer.</a></p>";
+				}
+				?>
+			
+		</div>
+		
+		<div class="evtlist">
+			<h4>Les dernières réponses proposées</h4>
+				<?php
+				if(count($this->noanswer) >0){
+					echo $this->partial("p_contrib_events.phtml", array('contribs' => $this->lastanswers, 'disp_type' => 0, 'disp_user' => 1));	
+				}else{
+					echo "<p class='arial_sml'>Aucune question n'a encore été posée.<img src='/images/evt_question.png'><a href='".$this->url(array('controller'=>'question', 'action' => 'ask'),'default',true)."'>Soyez le premier à participer.</a></p>";
+				}
+				?>
+						
+		</div>
+		
+		<div class="evtlist">
+
+			<h4>Les questions les plus populaires</h4>
+<!-- quesiton ayant sucité le plus de bavardages + de mise en favoris sur les deux derniers mois -->
+				<?php
+				if(count($this->noanswer) >0){
+					echo $this->partial("p_contrib_events.phtml", array('contribs' => $this->popanswers, 'disp_type' => 0, 'disp_user' => 1));	
+				}else{
+					echo "<p class='arial_sml'>Aucune question n'a encore été posée.<img src='/images/evt_question.png'><a href='".$this->url(array('controller'=>'question', 'action' => 'ask'),'default',true)."'>Soyez le premier à participer.</a></p>";
+				}
+				?>			
+		</div>
+	
+
+	
+
+</div>
+
+
+
+

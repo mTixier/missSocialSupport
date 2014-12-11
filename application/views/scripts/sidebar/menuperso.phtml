@@ -1,0 +1,27 @@
+<div id="hello">
+<?php
+
+$user_session = new Zend_Session_Namespace('registred');
+
+// Récupération de l'image de l'avatar
+$tavtr = new Aloa_Mdl_Tavatar();
+$avtr = $tavtr->find($user_session->avatar_id)->current();
+
+?>
+
+<h4>Bonjour <?php echo $user_session->uname ?></h4>
+<div>
+<div style="float:left;padding-right:8px;"><a href="<?php echo $this->url(array('action'=>'pageperso', 'controller' => 'communaute', 'uname' => $user_session->uname),'default',true); ?>" title="Consulter ma page personnelle.">
+<img src="/images/avatar/<?php echo $avtr->file; ?>" style="width:75px;border:1px solid #CCC;"/></a></div>
+<div>
+<a href="<?php echo $this->url(array('action'=>'pageperso', 'controller' => 'communaute', 'uname' => $user_session->uname),'default',true); ?>">Ma page personnelle</a><br/>
+<a href="<?php echo $this->url(array('action'=>'configuration', 'controller' => 'communaute'),'default',true); ?>">Paramètres de mon compte</a><br/>
+<!-- <img src="/images/mini_fav.png"/>&nbsp;<a href="<?php //echo $this->url(array('action'=>'favoris', 'controller' => 'communaute'),'default',true); ?>">Mes favoris</a><br/>-->
+<img src="/images/mini_fdbk.png">&nbsp;<a href="javascript:popupAlertInit();">Un problème ? Une suggestion ?</a><br/>
+<img src="/images/suppr.png"/>&nbsp;<a href="<?php echo $this->url(array('action'=>'quit', 'controller' => 'login'),'default',true); ?>">Se déconnecter</a><br/></div>
+<br/>
+</div>
+
+</div>
+
+<br/>

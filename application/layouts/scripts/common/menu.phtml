@@ -1,0 +1,11 @@
+<div id="menu_hz">
+	<a href="<?php echo $this->url(array('controller'=>'communaute'),'default',true); ?>" title="Les Aloïstes"><img src="/images/mnu_ct_sml.png"/></a>
+	<a href="<?php echo $this->url(array('controller'=>'document'),'default',true); ?>" title="S'informer"><img src="/images/mnu_doc_sml.png"/></a>
+	<a href="<?php echo $this->url(array('controller'=>'question'),'default',true); ?>" title="Questions & Réponses"><img src="/images/mnu_qr_gnrl_sml.png"/></a>
+	<a href="<?php echo $this->url(array('controller'=>'story'),'default',true); ?>" title="Témoigner"><img src="/images/mnu_rt_sml.png"/></a>
+	<a href="<?php echo $this->url(array('controller'=>'about'),'default',true); ?>" title="A propos d'Aloa"><img src="/images/mnu_info_sml.png"/></a>
+<font class="arial_sml"><form style="display:inline;padding:0px;margin:0px;" id="search_form" action="<?php echo $this->url(array('controller'=>'search', 'action'=>'index'),'default',true); ?>" method="get">&nbsp;&nbsp;Rechecher :&nbsp;</font><input name="rqt"/><a href="javascript:document.getElementById('search_form').submit();"><img src="/images/loupe.png"/></a></form></div>
+<?php if($_SERVER['REQUEST_URI'] != '/'){
+echo "<div><a href='/' style='padding:10px;'><< Retour à la page d'accueil</a></div>";
+}
+?>

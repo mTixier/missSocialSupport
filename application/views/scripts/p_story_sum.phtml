@@ -1,0 +1,77 @@
+<?php
+
+$user = $this->model->findParentAloa_Mdl_Tuser();
+$user_avtr = $user->findParentAloa_Mdl_Tavatar();
+
+$subject = $this->model->findParentAloa_Mdl_Tcontribution();
+$subject_author = $subject->findParentAloa_Mdl_Tuser();
+
+$tcontrib = new Aloa_Mdl_Tcontribution();
+$select = $tcontrib->select()->order('dateTime DESC');
+
+$stories = $subject->findAloa_Mdl_TcontributionByRelatedContribution($select);
+
+$user_unicity = array();
+ ?>
+
+ 
+<div class="qr_block">
+
+	<div class="trombi_sml">
+	
+	<?php foreach($stories as $c){
+		
+		$contributor = $c->findParentAloa_Mdl_Tuser();
+		$avatar = $contributor->findParentAloa_Mdl_Tavatar()->file;
+		
+			if(!in_array($c->author_id,$user_unicity)){
+				echo "<div class='f_left' style='padding-bottom:1px;'>
+				<a href='".$this->url(array('controller'=>'story', 'action' => 'view', 'storytheme' => $this->sqlifyParam($subject->title), 'userstory' => $this->sqlifyParam($c->title)),'default',true)."' title='Consulter la dernière contribution de ".$contributor->uname."'><img src='/images/avatar/sml_$avatar' class='sml_avtr'/></a></div>";
+				
+				$user_unicity[] = $c->author_id;
+
+			}
+		}
+	?>
+	
+		</div>
+
+		
+	<div class="qr_pres">
+	<div>
+	
+	<div class='f_left' style="padding:0px 5px 5px 0px;"><img src="/images/avatar/<?php echo $user_avtr->file; ?>" class="avtr_trombi"/></div>
+	
+	<h4><a href="<?php echo $this->url(array('controller'=>'story', 'action' => 'view', 'storytheme' => $this->sqlifyParam($subject->title), 'userstory' => $this->sqlifyParam($this->model->title)),'default',true); ?>"><?php echo $this->model->title; ?></a></h4>
+	<font class="arial">de 
+		<?php
+			echo $this->partial("p_userinfo_decorator.phtml", array('base' => $user->uname, 'user' => $user));
+		?>, <?php echo $this->humanDate($this->model->dateTime); ?></font>
+
+	</div>
+		
+	<p><?php echo substr(strip_tags($this->model->content), 0, 140); ?> <a href="<?php echo $this->url(array('controller'=>'story', 'action' => 'view', 'storytheme' => $this->sqlifyParam($subject->title), 'userstory' => $this->sqlifyParam($this->model->title)),'default',true); ?>">lire la suite </a></p>
+
+	
+	<p style="border-top:dashed 2px #CCC;">
+			<h4><a href="<?php echo $this->url(array('controller'=>'story', 'action' => 'view', 'storytheme' => $this->sqlifyParam($subject->title)),'default',true); ?>">Sujet du témoignage : <em><?php echo $subject->title; ?></em></a></h4>
+		<font class="arial">proposé par 
+		<?php
+			echo $this->partial("p_userinfo_decorator.phtml", array('base' => $subject_author->uname, 'user' => $subject_author));
+		?>, <?php echo $this->humanDate($subject->dateTime); ?></font>
+	</p>
+	
+	</div>
+
+	<div class="fav_contrib_mnu">
+		<a href="<?php echo $this->url(array('controller'=>'story', 'action' => 'view', 'storytheme' => $this->sqlifyParam($subject->title), 'userstory' => $this->sqlifyParam($this->model->title)),'default',true); ?>" title="Participez aux bavardages sur ce sujet de témoignage." class="has_bavrdg"></a>
+		<!--<a href="javascript:popup('favPopUp');" title="Marquer comme favoris" class="fav_set"></a>-->
+		
+	</div>
+
+	<div class="contrib_detail">
+	
+	</div>
+
+</div>
+

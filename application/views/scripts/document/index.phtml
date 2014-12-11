@@ -1,0 +1,66 @@
+<div style="padding: 0px 30px 30px 30px;">
+	<div><img src="/images/mnu_doc.png" style="float:left;width:150px;padding-right:10px;"/>
+		<div><h3>S'informer</h3></div>
+		<p>La bibliothèque Aloa vous permet de partager les sites webs et documents qui vous ont été utiles. En ouvrant la barre latérale vous pouvez discuter avec les membres de la communauté et laisser vos commentaires et impressions sur les documents.</p>
+		
+	</div>
+
+	<h5>Classés par thèmes :</h5>
+	<div>
+	
+	
+	<?php 
+	foreach($this->thm as $t){
+		echo "<a href='".$this->url(array('action'=>'theme', 'controller' => 'document', 'theme_id' => $t['topicid']),'default',true)."'>".$t['name']."</a>&nbsp;&nbsp;";
+	}
+	?>
+	
+	</div>
+	
+	<h5>Rechercher</h5>
+	<div>
+	<form name="recherche_form" method='post' action="<?php echo $this->url(array('controller'=>'document', 'action' => 'search'),'default',true); ?>">
+	<p><input name="rqt" style="width:300px"/>
+	<input type="submit" value="Rechercher"/></p>
+	</form>
+	<br/>
+	</div>
+
+	
+	<div><img src="/images/evt_newdoc.png"/><a href="#contribuer">Proposer un nouveau document</a></div>
+
+
+	<div class="evtlist">
+			<h4>Les derniers documents ajoutés</h4>
+<!-- par date -->
+		<?php
+				if(count($this->lastdoc) >0){
+					echo $this->partial("p_contrib_events.phtml", array('contribs' => $this->lastdoc, 'disp_type' => 0, 'disp_user' => 1));
+				}else{
+					echo "<p class='arial_sml'>Aucun document n'a encore été proposé.<img src='/images/evt_document.png'><a href='#contribuer'>Soyez le premier à participer.</a></p>";
+				}
+		?>
+
+	</div>
+		
+	<div class="evtlist">
+			<h4>Les documents les plus populaires</h4>
+<!-- quesiton ayant sucité le plus de bavardages + de mise en favoris sur les deux derniers mois -->
+		<?php
+				if(count($this->popdoc) >0){
+					echo $this->partial("p_contrib_events.phtml", array('contribs' => $this->popdoc, 'disp_type' => 0, 'disp_user' => 1));
+				}else{
+					echo "<p class='arial_sml'>Aucun document n'a encore été proposé.<img src='/images/evt_document.png'><a href='#contribuer'>Soyez le premier à participer.</a></p>";
+				}
+				
+				//print_r($this->nfo);
+		?>
+
+
+	</div>
+	
+	
+	<a name="contribuer"><img src="/images/evt_newdoc.png"/></a><font class="arial_b">Proposer un nouveau document à la communauté</font>
+
+	<?php echo $this->action('propose', 'document'); ?>
+</div>

@@ -1,0 +1,56 @@
+
+.nicEdit-main {
+font-family:arial;
+}
+
+
+.edit_btn{
+cursor:pointer;
+font-family:arial;
+text-decoration: none;
+font-weight:bold;
+display:inline;
+width:105px;
+height:23px;
+margin-left:5px;
+background:url('/images/crayon.png') no-repeat;
+padding: 2px 28px 2px 28px;
+color:#000;
+}
+
+.edit_btn:hover{
+color:#000;
+background:url('/images/crayon_b.png') no-repeat;
+padding-left:26px;
+
+}
+
+
+
+.aloa_editor{
+background:#EEE;border:1px solid #CCC;padding:2px;overflow:auto;
+}
+
+#IERoot .aloa_editor{
+background:#EEE;border:1px solid #CCC;padding:2px;overflow:auto;height:100%;display:block;
+}
+
+.aloa_editor_input{
+padding-top:2px;
+}
+
+.aloa_editor_textarea{
+border:1px solid #000;width:300px;height:300px;margin:3px;padding:5px;font-family:arial
+}
+
+.aloa_editor_btn{
+margin-top:1px;
+vertical-align:top;
+border:1px solid #EEE;
+margin-left:5px
+}
+
+.aloa_editor_btn:hover{
+background:#DDD;
+border:1px solid #777;
+}

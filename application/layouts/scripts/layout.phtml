@@ -1,0 +1,226 @@
+<?php
+echo $this->doctype();
+?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head>  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+
+  <?php 
+	echo $this->headTitle();
+	echo $this->headMeta();
+	$this->headLink()->appendStylesheet('/css/aloa.css')
+					->appendStylesheet('/css/feedback.css')
+					->appendStylesheet('/css/jquery/ui-lightness/jquery-ui-1.8rc3.custom.css')
+					->appendStylesheet('/css/editors.css');
+	echo $this->headLink();
+	
+	$this->headScript()->appendFile('/js/aloa.js', 'text/javascript')
+						->appendFile('/js/nicEdit.js', 'text/javascript')
+						->appendFile('/js/jquery-1.4.2.min.js', 'text/javascript')
+						->appendFile('/js/jquery-ui-1.8rc3.custom.min.js', 'text/javascript')
+						->appendFile('/js/smileyPlugin.js', 'text/javascript')
+						->appendFile('/js/closePlugin.js', 'text/javascript')
+						->appendFile('/js/editors.js', 'text/javascript')
+						->appendFile('/js/csspopup.js', 'text/javascript')
+						->appendFile('/js/feedback.js', 'text/javascript')
+						->appendFile('/js/chat.js', 'text/javascript');
+	echo $this->headScript();	
+						
+	//echo "<base href='".Zend_Controller_Front::getInstance()->getParam('aloa_server')."'/>";
+	?>
+</head> 
+<body>
+<script language="javascript">
+	//putFeedbackForm();
+</script>
+
+<!--[if lt IE 8]>  <div id="IEroot">  <![endif]--> 
+
+<!-- Layer pour les favoris, les gifts; la notificaiton de problèmes -->
+<?php
+if(Zend_Session::namespaceIsset('registred')){
+	$user_session = new Zend_Session_Namespace('registred');
+}else{
+	$user_session = null;
+}
+
+?>
+
+
+<div id="layer405" style="display:none"></div>
+
+<div id="notificationPopUp" style="<?php echo ($user_session == null)?"height:470px;":""; ?>display:none">
+	<h4 style="margin:0px;"><img src="/images/notify.png">&nbsp;Signaler un problème - Suggérer une amélioration </h4>
+	<p>
+	Vous pouvez reporter ici le problème technique ou éditorial que vous rencontrez.
+	Nous ferons de notre mieux pour y apporter une solution le plus rapidement possible.</p>
+	<form name="alertPopUp_form" id="alertPopUp_form" >
+	<textarea id="alertPopUp_report" name="alertPopUp_report" style="width:380px;height:80px;"></textarea>
+	
+	<?php if($user_session == null): ?>
+	<?php
+	$captcha=new Zend_Captcha_Image();
+	$captcha->setWordLen('4')
+        ->setHeight('60')
+        ->setFont('./font/OldSansBlack.ttf')
+        ->setImgDir('./upload')
+        ->setDotNoiseLevel('3')
+        ->setLineNoiseLevel('3');
+	$captchaId=$captcha->generate(); 
+	?>
+		
+	<p><a class="info" href="javascript:void(0)"><img src="/upload/<?php echo $captchaId?>.png" id="alertPopUp_captcha_img"><font class="redstar">* </font>: 
+	<span>Merci de recopier le code écrit dans cette image afin de protéger Aloa du spam et des pirates.</span></a>&nbsp;<input id="alertPopUp_captcha_input" />
+	<input type='hidden' value='<?php echo $captchaId?>' id='alertPopUp_captcha_id' />
+	</p>
+	<?php endif; ?>
+	
+	
+	<div id='alertPopUp_err'></div>
+	<p>Merci de nous aider à faire d'Aloa un espace agréable.</p>
+	<input type="button" id="alertPopUp_send" value="Envoyer"/>
+	<input type="button" onClick="javascript:popup('notificationPopUp');" value="Fermer"/>
+	</form>
+</div>
+
+
+
+
+<div id="favPopUp" style="display:none">
+	<h4 style="margin:0px;"><img src="/images/fav.png">&nbsp;Marquer comme favoris</h4>
+	<p>
+	Pour vous aidez à garder vos favoris clairement organisé et pour améliorer le moteur de recherche d'Aloa,
+	vous pouvez ajouter deux ou trois thèmes à votre favoris. Vous pouvez vous inspirer des thèmes existant ou en créer de nouveau.</p>
+	<form name="fav_form" method="post">
+	<font class="arial_sml_b">Thème 1 : </font><input style="width:110px"/>&nbsp;
+	<font class="arial_sml_b">Thème 2 : </font><input style="width:110px"/><br/>
+	<font class="arial_sml_b">Thème 3 : </font><input style="width:110px"/>&nbsp;
+	<font class="arial_sml_b">Thème 4 : </font><input style="width:110px"/><br/>
+	<p class="arial_sml"><font class="arial_b">Thèmes les plus utilisés par les autres membres pour cette contribution :</font><br/>
+	<em>Pas encore de suggestion. Vous êtes le premier à avoir marqué cette contribution comme favoris.</em>
+	</p>
+	
+	<p class="arial_sml"><input type="checkbox" name="fav_nomore"/>Je ne souhaite pas classer mes favoris. N'affichez plus cette fenêtre.</p>
+	<input type="submit" value="Envoyer"/>
+	<input type="button" onClick="javascript:popup('favPopUp');" value="Fermer"/>
+	</form>
+</div>
+
+
+<div id="giftPopUp" style="display:none">
+
+	
+	<h4 style="margin:0px;"><img src="/images/cake.png">&nbsp;Offrir une part de gâteau à <font id='giftPopUp_dest_fld1'></font></h4>
+	<?php if($user_session != null): ?>
+	<!--<form name="gift_form" method="post">-->
+	<p>
+	Accompagnez votre cadeau d'un court message que <font id='giftPopUp_dest_fld2'></font> recevra dans sa boite mail.
+	</p>
+	<font class="arial_b">Votre message :</font><br/>
+	<textarea id="giftPopUp_msg" name="giftPopUp_msg" style="width:380px;height:120px;"></textarea>
+	<p>
+	<div id='giftPopUp_err'></div>
+	<input type="button" id="giftPopUp_send" value="Envoyer"/>
+	<!--<input type="button" onClick="javascript:popup('giftPopUp');" value="Je ne souhaite pas envoyer de message"/>-->
+	<input type="button" onClick="javascript:popup('giftPopUp');" value="Fermer"/>
+	</p>
+	<!--</form>-->
+	<?php else: ?>
+	<p>
+	Vous devez être inscrit ou connecté pour pouvoir envoyer un cadeau.
+	</p>
+	<p>
+	<input type="button" onClick="javascript:popup('giftPopUp');" value="Fermer"/>
+	</p>
+	<?php endif; ?>
+	
+</div>
+
+<div id="advicePopUp" style="display:none">
+
+	
+	<h4 style="margin:0px;"><img src="/images/conseil.png">&nbsp;Ajouter comme conseil pratique :</h4>
+	<?php if($user_session != null): ?>
+
+	<p>
+	<div id='advicePopUp_loader' style="display:none;margin:10px;"><img src='/images/refresh_sml.gif'></div>
+	<div id='advicePopUp_msg'></div>
+
+	<br/>
+	<input type="button" onClick="javascript:popup('advicePopUp');" value="Fermer"/>
+	</p>
+
+	<?php else: ?>
+	<p>
+	Vous devez être inscrit ou connecté pour pouvoir marquer une contribution comme conseil pratique.
+	</p>
+	<p>
+	<input type="button" onClick="javascript:popup('advicePopUp');" value="Fermer"/>
+	</p>
+	<?php endif; ?>
+	
+</div>
+
+<!-- Layer pour les favoris et la notificaiton de problèmes -->
+<div id="main">
+<?php
+/*
+if(Zend_Session::namespaceIsset('visiteur')){
+	$visitor = new Zend_Session_Namespace('visiteur');
+
+	echo $visitor->lastUrl." : ".$visitor->precedingUrl;
+}
+*/
+?>
+	<div id="mainframe">
+	<?php echo $this->partial('common/header.phtml');?>
+		<div id="content">
+		<!-- le conteneur de la sidebar -->
+			<div id="sidebar">
+			<!-- le contenu de la page -->
+				<div id="pg" class="s_pg">
+				<?php echo $this->partial('common/menu.phtml');?>
+				<?php echo $this->layout()->content; ?>
+
+
+					<div class="lrgspc"></div>
+					
+					<div style="clear:both;"></div>
+					<?php echo $this->partial('common/footer.phtml'); ?>
+	
+				</div>
+				<!-- le contenu de la sidebar -->
+				<div id="side_cmplt" class="s_side_cmplt">
+<!--
+				<div id="side_menu" class="s_side_menu">
+					<a href="javascript:void(0);" onClick="javascript:expandSidebar();"><img src="/images/contrib.gif" title="Il y a des choses à voir dans la barre latérale. Cliquez pour les consulter."/></a>
+					<a href="javascript:void(0);"><div id="side_arrow" class="s_side_arrow_rgt" onClick="javascript:(this.className == 's_side_arrow_rgt')?minimizeSidebar():expandSidebar();" title="Etendre ou réduire l'espace bavardages"></div></a>
+				</div>
+				<div id="side_content" class="s_side_content">
+					
+
+					<a href="javascript:void(0);" onClick="javascript:minimizeSidebar();"><img src="/images/reduire.png" title="Réduire la barre latérale"/></a>
+					<a href="javascript:void(0);" onClick="javascript:maximizeSidebar();"><img src="/images/maximize.png" title="Maximiser la barre latérale"/></a>
+					
+					-->
+						<?php 
+						echo $this->layout()->sidebar; 
+						
+						?>
+					
+					</div>
+				</div>
+		
+		
+			</div>
+		
+		</div>
+		
+		
+	</div>
+</div>
+ <!--[if IE]>  </div>  <![endif]--> 
+
+</body>
+</html>

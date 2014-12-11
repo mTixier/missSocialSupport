@@ -1,0 +1,9 @@
+<div style="padding: 0px 30px 30px 30px;">
+	<p><a href="/document"><< Rechercher parmi les autres documents</a><p>
+<?php
+if($this->doc != null){
+	$this->partial()->setObjectKey('model');
+	echo $this->partial("p_document.phtml", $this->doc);
+}
+?>
+</div>

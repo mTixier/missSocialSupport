@@ -1,0 +1,38 @@
+<br/>
+<br/>
+			<div style="text-align:left;padding:5px;margin-bottom:15px;background-color:#FF9;border:2px solid #CC6;">
+			<h4>Rejoignez-nous</h4>
+			<p>
+Partager les soucis du quotidien, bénéficier de l'expérience des uns et des autres, simplement discuter pour s'évader un peu sont les raisons qui animent Aloa.</p><p>Vous pouvez d'ores et déjà visiter les différentes rubriques du site afin de faire connaissance avec nous. Nous espérons que vous trouverez le site agréable et que vous souhaiterez nous rejoindre en vous <a href="<?php echo $this->url(array('controller'=>'inscription', 'action' => 'index'),'default',true); ?>">inscrivant.</a></p>
+			</div>
+
+			<div id="login_frm">
+				<!--<form name="login_form" method='post' action="<?php //echo $this->url(array('action' => 'identification', 'controller' => 'login'), false, 'default'); ?>">-->
+					<h4>Connexion : </h4>
+					<!--
+					<input type="hidden" name="lastUrl" />
+					<div>Adresse email : <input name="mail"/></div>
+					<div>Mot de passe : <input name="pwd" type="password"/></div>
+					<div><input type="checkbox"> Se souvenir de moi</div>
+					<div><input type="submit" value="Me connecter" onMouseDown="this.form.elements['lastUrl'].value = document.location.href;"/>
+					
+					</div>-->
+					<?php 
+					echo $this->form; 
+					
+					if(isset($this->errmsg)){
+					
+						echo "<ul class='errors'><li>".$this->errmsg."</li></ul>";
+					
+					}
+					
+					?>
+					
+					<div><a href="<?php echo $this->url(array('controller'=>'inscription', 'action' => 'index'),'default',true); ?>">Je souhaite m'inscrire</a></div>
+					<div><a href="<?php echo $this->url(array('controller'=>'login', 'action' => 'mdpoublie'),'default',true); ?>">Mot de passe oublié ?</a></div>
+				<!--</form>-->
+			</div>
+
+						
+
+		

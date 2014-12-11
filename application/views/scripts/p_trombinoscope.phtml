@@ -1,0 +1,16 @@
+<?php
+/*
+usage : $this->partialLoop("p_trombinoscope.phtml", $this->lastusers);
+
+*/
+$avtr = $this->model->findParentAloa_Mdl_Tavatar();
+?>
+
+				<div class="f_left">
+
+					<?php 
+					$base ="<img src='/images/avatar/".$avtr->file."' class='avtr_trombi'/>";
+					echo $this->partial("p_userinfo_decorator.phtml", array('base' => $base, 'user' => $this->model)); 
+					?>
+	
+				</div>

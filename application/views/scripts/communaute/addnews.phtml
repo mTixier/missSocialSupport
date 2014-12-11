@@ -1,0 +1,13 @@
+<div style="padding: 10px 30px 30px 30px;">
+	
+	<?php
+	if(isset($this->errmsg)){
+		echo "<p><ul class='errors'><li class='arial_sml'>".$this->errmsg."</li></ul></p>";
+	}
+	?>
+	
+	<?php echo $this->form; ?>
+<script type="text/javascript">
+	appendToEditorList('nouvelles');
+</script>
+</div>

@@ -1,0 +1,56 @@
+<?php
+
+$user = $this->model->findParentAloa_Mdl_Tuser();
+
+if(Zend_Session::namespaceIsset('registred')){
+	$user_session = new Zend_Session_Namespace('registred');
+}else{
+	$user_session = null;
+}
+
+?>
+
+<div class="doc_block">
+	<div class="doc_pres">
+
+	<a name="<?php echo $this->model->id; ?>"></a>
+	<?php 
+
+	
+	if($this->model->title != null){ 
+	
+		echo "<h4>";
+		if($this->model->type == Aloa_Mdl_Tcontribution::PUBLICNEWS){
+			echo "<img src='/images/evt_newnews.png' title='Actualité'> ";
+		}
+		echo "<font>".$this->model->title;
+		// Ajout sous conditions du bouton éditer : Attention l'id du bouton est important btn_idContrib_colName - Le champs simple se placent à l'intérieur de la balise à éditer
+		echo ($user_session->id == $this->model->author_id || $user_session->rights == 'admin')?"<a href='javascript:void(0);' id='btn_".$this->model->id."_title' class='edit_btn' onMouseUp='javascript:editMe(this);'>Editer</a>":"";
+		echo "</font></h4>";
+	}
+	
+	
+	
+	?>
+	<p style="font-family:arial;color:#999;font-size:10pt;"><?php echo $this->humanDate($this->model->dateTime); ?></p>
+
+	<div id="<?php echo $this->model->id."_content";?>" style="width:380px;height:100%;"><p><?php 
+		echo $this->model->content; 
+		?></p>
+	</div><?php echo ($user_session->id == $this->model->author_id || $user_session->rights == 'admin')?"<a href='javascript:void(0);' id='btn_".$this->model->id."_content' class='edit_btn' onMouseUp='javascript:editMeRichVersion(this);'>Editer</a>":""; 
+			// Ajout sous conditions du bouton éditer : Attention l'id du bouton est important btn_idContrib_colName	- le bouton doit être le frère direct (et vraiment direct, pas de sauts de lignes!!!) du block à éditer pour le richEditor
+		?>
+
+
+
+	</div>
+	
+	<div class="doc_mnu">
+		<?php if($user_session->id != $this->model->author_id): ?>
+			<div class="f_left"><a href="<?php echo ($user_session != null)?"javascript:popupGiftInit('".$user->uname."','".$this->model->id."');":"javascript:popup('giftPopUp');"; ?>" title="Offrir une part de gâteau à <?php echo $user->uname; ?>" class="cake_set"></a></div>
+		<?php endif; ?>
+			<!--<div class="f_left"><a href="javascript:popup('favPopUp');" title="Marquer comme favoris" class="fav_set"></a></div>	-->
+			<div class="f_left"><a href="<?php echo ($user_session != null)?"javascript:popupAdviceInit('".$this->model->id."');":"javascript:popup('advicePopUp');"; ?>" title="Marquer comme conseil pratique" class="advice_set"><span id="<?php echo "nbUpCntr_".$this->model->id; ?>" style="padding-left:35px;"><?php echo $this->model->nbUp;?></span></a></div>	
+	</div>
+	
+</div>

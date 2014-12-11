@@ -1,0 +1,19 @@
+<div style="padding: 0px 30px 30px 30px;">
+	
+	<h3>Renouvellement de votre mot de passe</h3>
+	
+	<?php 
+	
+	if(!$this->flag){
+		echo "<p>Entrer votre nouveau de passe dans les deux champs ci-dessous, puis cliquez sur \"Envoyer\" afin que nous mettions à jour votre compte utilisateur.</p>";
+		echo $this->form; 
+	}else{
+		echo "<p>Félicitations. Votre mot de passe a été renouvellé avec succès. Vous pouvez maintenant vous connecter avec celui-ci.</p>";
+		
+	}
+	
+	?>
+	
+	<p><a href="/">Retour à l'accueil</a></p>
+	
+</div>

@@ -1,0 +1,21 @@
+<div style="padding: 0px 30px 30px 30px;">
+
+<h3> Erreur d'identification </h3>
+
+<?php
+	
+	echo "<p>".$this->form."</p>";
+
+	if(isset($this->errmsg)){
+	
+		echo "<ul class='errors'><li>".$this->errmsg."</li></ul>";
+	
+	}	
+?>
+
+
+	<div><a href="<?php echo $this->url(array('controller'=>'inscription', 'action' => 'index'),'default',true); ?>">Je souhaite m'inscrire</a>
+	&nbsp;&nbsp;-&nbsp;&nbsp;<a href="<?php echo $this->url(array('controller'=>'login', 'action' => 'mdpoublie'),'default',true); ?>">Mot de passe oublié ?</a></div>
+	<div class="lrgspc"></div>
+		
+</div>

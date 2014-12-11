@@ -1,0 +1,29 @@
+<?php if(count($this->related) > 0): ?>
+<div class="evtlist" style='text-align:left;background:#FFF'>
+
+<h4>Ailleurs sur Aloa : </h4>
+		<?php
+			$tcontrib = new Aloa_Mdl_Tcontribution();
+			$key = Aloa_Mdl_Tcontribution::SEARCH_ENGINE_PREFIX . 'id'; 
+			
+			$ids = array();
+			
+			$max = 2;
+			$idx = 0;
+			
+			foreach($this->related as $hit){
+				$idx++;
+				$ids[] = $hit->$key;
+				if($idx > $max){
+					break;
+				}
+			}
+			
+			$rows = $tcontrib->find($ids);
+
+			echo $this->partial("p_contrib_events.phtml", array('contribs' => $rows, 'disp_type' => 1, 'disp_user' => 0));	
+		?>
+
+</div>
+
+<?php endif; ?>

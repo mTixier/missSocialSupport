@@ -1,0 +1,26 @@
+<div style="padding: 0px 30px 30px 30px;">
+<h3>Comment récupérer votre mot de passe ? </h3>
+				
+				<p>
+				<?php
+				if(!$this->flag){
+					echo "C'est trés simple. Renseignez dans le champs ci-dessous votre adresse mail, de là nous pourrons retrouver votre compte utilisateur. Une fois que vous aurez cliqué sur le bouton \"Envoyer\", nous vous ferons parvenir d'ici quelques minutes un email vous permettant de changer votre mot de passe.";
+					echo "<br/></p>";
+					echo $this->form;
+						if(isset($this->errmsg)){
+							
+							echo "<ul class='errors'><li>".$this->errmsg."</li></ul>";
+							
+						}
+					
+				}else{
+					echo "Opération réussie. Un email vient de vous être envoyer contenant un lien vous permettant de générer un nouveau mot de passe. Il devrait vous parvenir d'ici quelques minutes. <br/><br/>A très bientôt sur Aloa.";
+				}
+				?>
+				
+
+				<p><a href="/">Retour à l'accueil</a></p>
+				</p>
+				<div class="lrgspc"></div>
+				
+</div>

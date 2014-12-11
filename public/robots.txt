@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /inscription/
+Disallow: /error/
+Disallow: /login/
+Disallow: /cron/
+Disallow: /communaute/pageperso/
+Sitemap: http://www.aloa-aidants.fr/sitemap.txt

@@ -1,0 +1,24 @@
+<p>Choisissez votre <a class="info" href="javascript:void(0)">avatar <font class="redstar">* </font>: 
+	<span>L'avatar est une petite image qui vous représente sur le site web.</span></a></p>
+	
+	<!-- Pour stocker la valeur de l'avatar selectionné -->
+	
+	<div id="avatar_selector">
+		<!--<input type="hidden" id="avatar_selected">-->
+		
+		<?php 
+		foreach($this->avatars as $row){
+		
+			if($this->selected && 'avtr_'.$row->id == $this->selected){
+				echo "<a id='avtr_".$row->id."' class='avatar_frame_selected' href='javascript:void(0)' onclick='javascript:selectAvatar(this);'><div class='fnd_avatar'><img class='img_avatar' src='/images/avatar/".$row->file."'></div></a>";
+			}else{
+		
+				echo "<a id='avtr_".$row->id."' class='avatar_frame' href='javascript:void(0)' onclick='javascript:selectAvatar(this);'><div class='fnd_avatar'><img class='img_avatar' src='/images/avatar/".$row->file."'></div></a>";
+			}
+		}
+		?>
+		 
+		<div style="clear:both;"></div>
+		
+		<!--<p>Choisir une autre image : <input type="file"/></p>-->
+	</div>

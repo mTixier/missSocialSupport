@@ -1,0 +1,26 @@
+<?php
+
+$user = $this->model->findParentAloa_Mdl_Tuser();
+
+ ?>
+
+	<div class="doc_block">
+		<div class="doc_pres">
+		<h4><a href="<?php echo $this->url(array('action' => 'view', 'controller' => 'document', 'title' => $this->sqlifyParam($this->model->title)),'default',true)?>"><?php echo $this->model->title; ?></a></h4>
+
+		<div class="arial">ajouté <?php echo $this->humanDate($this->model->dateTime); ?>, par <?php echo $this->partial("p_userinfo_decorator.phtml", array('base' => $user->uname, 'user' => $user)); ?></div>
+		
+		
+		<p><font class="arial_b">Description : </font><?php echo substr(strip_tags($this->model->content), 0, 140); ?>... <a href="<?php echo $this->url(array('action' => 'view', 'controller' => 'document', 'title' => $this->sqlifyParam($this->model->title)),'default',true)?>">lire la suite</a></p></p>
+		
+		<!--<p><font class="arial_b">Thème(s) : </font><a href="/document/theme/thm_id/2">Associations/Organisations</a>
+
+		</p>-->
+		
+		</div>
+		
+		<div class="doc_mnu">
+		<a href="<?php echo $this->url(array('action' => 'view', 'controller' => 'document', 'title' => $this->sqlifyParam($this->model->title)),'default',true)?>" title="Participez aux bavardages sur ce document." class="has_bavrdg"></a>
+		<!--<a href="javascript:popup('favPopUp');" title="Marquer comme favoris" class="fav_set"></a>-->
+		</div>
+	</div>

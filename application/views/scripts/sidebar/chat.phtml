@@ -1,0 +1,30 @@
+
+
+<div style="text-align:left;font-size:10pt;overflow:auto;">
+<h4><img src="/images/mnu_contrib_sml.png"/> Les bavardages de la page : <br/><em><?php echo $this->ttl; ?></em></h4>
+
+<div id="bavardages" style="background:#FFF;border:2px solid black;height:400px;overflow:auto;margin-bottom:8px;">
+<img src='/images/refresh.gif'>
+<script type="text/javascript">
+	initChat(<?php echo $this->id; ?>);
+</script>
+
+
+</div>
+
+
+<h4><img src="/images/evt_newcontrib.png">Participer au bavardage : <img src='/images/refresh_sml.gif' id='chat_refresh' style='display:none'></h4>
+
+<div id="new_msg" style="background:#EEE;border:2px solid black;">
+		
+			<div style="background:#FFF;"><textarea style="width:200px;height:90px;" id='newChatMsg'></textarea></div>
+			<p style='text-align:center'><input type="button" value="Envoyer" onClick="javascript:appendChatMsg('<?php echo $this->current_author; ?>');"/></p>
+
+</div>
+<script type="text/javascript">
+	appendToEditorList('newChatMsg');
+</script>
+
+</div>
+
+<div>

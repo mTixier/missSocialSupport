@@ -1,0 +1,42 @@
+<div style="padding: 0px 30px 30px 30px;">
+
+	<h3> Résultats de la recherche : <em><?php echo $this->rqt; ?></em></h3>
+
+	
+		<?php
+		if(count($this->results) >0){
+					
+			echo "<h4>".count($this->results)." contributions trouvées. </h4><br/>";
+			$tcontrib = new Aloa_Mdl_Tcontribution();
+			$key = Aloa_Mdl_Tcontribution::SEARCH_ENGINE_PREFIX . 'id'; 
+			foreach($this->results as $hit){
+				$row = $tcontrib->find($hit->$key)->current();
+				
+				if($row->type == Aloa_Mdl_Tcontribution::ANSWER){
+					$parent = $row->findParentAloa_Mdl_Tcontribution();
+					$row = $parent;
+				}
+				
+				// L'idéal serait de revoir l'organisation du partial de sorte que à la place de la dernière réponse se soit la réponse matchée par le moteur de recherche qui sorte.
+				$this->partial()->setObjectKey('model');
+				echo $this->partial("p_qr_sum.phtml", $row);
+				//echo $hit->score;
+			}
+			
+		}else{
+			echo "<p>Notre moteur de recherche n'a trouvé aucune contribution correspondant à votre requête.</p>";
+		}
+		
+		echo "<p><a href='".$this->url(array('controller'=>'question'),'default',true)."'><< Retour</a></p>";
+
+		?>
+	
+		<h4>Les résultats de la recherche ne correspondent pas à votre attente ? <br/>
+		Vous pouvez poser votre question grâce au formulaire ci-dessous :</h4>
+		
+		<h3>Poser une question</h3>
+		
+		
+		<?php echo $this->action('propose', 'question'); ?>
+	
+</div>

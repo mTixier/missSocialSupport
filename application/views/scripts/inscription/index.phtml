@@ -1,0 +1,39 @@
+<div style="padding: 0px 30px 30px 30px;">
+<h3>Inscription </h3>
+				<p>
+				La procédure d'inscription prend quelques minutes. Nous vous demandons quelques informations afin de créer votre compte 
+				et votre page personnelle sur Aloa. Grâce à elle les autres utilisateurs pourront faire connaissance avec vous. 
+				Vous pourrez modifier ces informations par la suite à tout moment. 
+				<p>Une petite étoile rouge indique les informations obligatoires pour vous inscrire sur Aloa : <font class="redstar">*</font>
+				
+				<?php 
+				echo "<p style='text-align:center'><img src='/images/inscription_step_".$this->step.".png' title='Etape ".$this->step."'></p>";
+				// Ajout pour l'étape 2 -- pas propre mais bon...
+				// Attention ne fonctionne que si un champs 'avatar_selected' a été définti dans le formulaire suivant
+					if(isset($this->step) && $this->step == 2){
+						if(Zend_Session::namespaceIsset('visiteur')){
+							$visiteur = new Zend_Session_Namespace('visiteur');
+							echo "<fieldset><legend>Votre identité sur Aloa</legend>";
+							# Réucpération de l'avatar seléctionné par l'utilisateur pour les retours à l'étape précédente
+							$selected = isset($visiteur->inscription['avatar_selected'])?$visiteur->inscription['avatar_selected']:'avtr_2';
+							
+							echo $this->partial("p_avatar.phtml", array("avatars" => $this->avtr_sel, "selected" => $selected)); 
+							echo $this->form;
+							
+							echo "</fieldset>";
+						}else{
+							throw new Zend_Exception('Données d\'inscription indisponibles.');
+						}
+					}else{
+						echo $this->form;
+					}
+					
+			
+				
+				?>
+				
+				
+				
+				
+				
+</div>

@@ -1,0 +1,24 @@
+<?php
+/*
+ usage : $this->partial("p_userinfo_decorator.phtml", array('base' => 'someHtml', 'user' => $user));
+
+ base : l'élément à décorer
+ user : une ligne représentant l'utilisateur
+ 
+ */
+
+$avtr = $this->user->findParentAloa_Mdl_Tavatar();
+
+?>
+
+<a class="infobulle_profil" href="<?php echo $this->url(array('controller'=>'communaute', 'action' => 'pageperso', 'uname' => $this->user->uname),'default',true); ?>">
+			<font style="text-decoration:underline"><?php echo $this->base; ?></font>
+				<span>
+					<font class="arial_b"><img src="/images/avatar/<?php echo $avtr->file; ?>" class="sml_avtr"/>
+					<img src="/images/<?php echo $this->user->role; ?>.png" title="<?php echo ucfirst($this->user->role); ?>">&nbsp;
+					<?php echo $this->user->uname.", ".$this->user->city." (".$this->user->zip.")" ?></font>
+					<br/><br/><font class="arial"><em>"<?php echo $this->user->tagLine; ?>"</em><br/><br/>
+					inscrit depuis le <?php echo date("d/m/Y", $this->user->dateTime); ?></font>
+				</span>
+		
+</a> 

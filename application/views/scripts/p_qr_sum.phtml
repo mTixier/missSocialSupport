@@ -1,0 +1,80 @@
+<?php
+
+$user = $this->model->findParentAloa_Mdl_Tuser();
+//$answers = $this->model->findAloa_Mdl_Tcontribution();
+
+$tcontrib = new Aloa_Mdl_Tcontribution();
+$select = $tcontrib->select()->order('dateTime DESC');
+$answers = $this->model->findAloa_Mdl_TcontributionByRelatedContribution($select);
+$lastanswer = $answers->current();
+$user_unicity = array();
+ ?>
+
+ 
+<div class="qr_block">
+
+	<div class="trombi_sml">
+	
+	<?php foreach($answers as $c){
+		
+		$contributor = $c->findParentAloa_Mdl_Tuser();
+		$avatar = $contributor->findParentAloa_Mdl_Tavatar()->file;
+		
+			if(!in_array($c->author_id,$user_unicity)){
+				echo "<div class='f_left' style='padding-bottom:1px;'>
+				<a href='".$this->url(array('controller'=>'question', 'action' => 'view', 'title' => $this->sqlifyParam($this->model->title)),'default',true)."#".$c->id."' title='Consulter la dernière contribution de ".$contributor->uname."'><img src='/images/avatar/sml_$avatar' class='sml_avtr'/></a></div>";
+				
+				$user_unicity[] = $c->author_id;
+
+			}
+		}
+	?>
+	
+		</div>
+
+
+
+	<div class="qr_pres">
+	<h4><a href="<?php echo $this->url(array('controller'=>'question', 'action' => 'view', 'title' => $this->sqlifyParam($this->model->title)),'default',true); ?>"><?php echo $this->model->title; ?></a></h4>
+
+	<font class="arial">de 
+		<?php
+			echo $this->partial("p_userinfo_decorator.phtml", array('base' => $user->uname, 'user' => $user));
+		?>, <?php echo $this->humanDate($this->model->dateTime); ?></font>
+
+	<p><?php echo substr(strip_tags($this->model->content), 0, 140); ?> <a href="<?php echo $this->url(array('controller'=>'question', 'action' => 'view', 'title' => $this->sqlifyParam($this->model->title)),'default',true); ?>">lire la suite </a></p>
+
+	
+	
+	
+	<p class="last_rps"><font class="arial_b">Dernière réponse : </font>
+	<?php if($lastanswer != null): ?>
+	<font class="arial">de 
+		<?php
+		
+			$last_user = $lastanswer->findParentAloa_Mdl_Tuser();
+			echo $this->partial("p_userinfo_decorator.phtml", array('base' => $last_user->uname, 'user' => $last_user));
+		
+		?>, 
+		<?php echo $this->humanDate($lastanswer->dateTime); ?></font><br/>
+	
+	<p><?php echo substr(strip_tags($lastanswer->content), 0, 140); ?> <a href="<?php echo $this->url(array('controller'=>'question', 'action' => 'view', 'title' => $this->sqlifyParam($this->model->title)),'default',true)."#".$lastanswer->id; ?>">lire la suite </a></p>
+	
+	<?php else: ?>
+	
+	<p style='text-align:center'>Personne n'a encore proposé de réponses pour <?php echo $user->uname; ?>... <a href='<?php echo $this->url(array('controller'=>'question', 'action' => 'view', 'title' => $this->sqlifyParam($this->model->title)),'default',true); ?>#repondre'>Soyez le premier.</a></p>
+	
+	<?php endif; ?>
+	</div>
+
+	<div class="fav_contrib_mnu">
+		<a href="<?php echo $this->url(array('controller'=>'question', 'action' => 'view', 'title' => $this->sqlifyParam($this->model->title)),'default',true); ?>" title="Participez aux bavardages sur cette question." class="has_bavrdg"></a>
+		<!--<a href="javascript:popup('favPopUp');" title="Marquer comme favoris" class="fav_set"></a>-->
+		
+	</div>
+	<div class="contrib_detail">
+	<a href="<?php echo $this->url(array('controller'=>'question', 'action' => 'view', 'title' => $this->sqlifyParam($this->model->title)),'default',true); ?>" class="contrib_detail_lnk">Voir toutes les réponses proposées.</a>
+	</div>
+
+</div>
+

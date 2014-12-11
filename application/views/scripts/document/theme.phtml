@@ -1,0 +1,27 @@
+<div style="padding: 0px 30px 30px 30px;">
+
+	<h3>Thème : <em><?php echo $this->theme ?></em></h3>
+
+	<p><img src="/images/evt_newdoc.png"/><a href="#contribuer">Proposer un nouveau document</a></p>
+	
+		<h4><?php echo count($this->docs); ?> documents correspondent à ce thème.</h4>
+
+		<?php
+
+			foreach($this->docs as $row){
+			
+				if($row instanceof Zend_Db_Table_Row){
+					$this->partial()->setObjectKey('model');
+					echo $this->partial("p_document_sum.phtml", $row);
+				}
+			
+			}	
+			
+		?>
+		
+	<p><a href="/document"><< Rechercher parmi les autres documents</a>
+
+	<h4><a name="contribuer"><img src="/images/evt_newdoc.png"/></a> Proposer un document dans le thème : <em><?php echo $this->theme ?></em></h4>
+
+	<?php echo $this->action('propose', 'document', 'default', array('theme_id' => $this->tid)); ?>
+</div>

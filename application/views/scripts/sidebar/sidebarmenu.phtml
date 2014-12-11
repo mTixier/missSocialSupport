@@ -1,0 +1,23 @@
+				<div id="side_menu" class="s_side_menu">
+				
+				<?php if($this->has_chat): ?>
+					<a href="javascript:void(0);" onClick="javascript:defaultSidebar();">
+						
+						<?php 
+						if($this->has_chat == 1){
+							echo '<img src="/images/contrib.png" title="Il y a des choses à voir dans la barre latérale. Cliquez pour les consulter."/>';
+						}else if($this->has_chat == 2){
+							echo '<img src="/images/contrib.gif" title="Il y a un bavardage en cours dans la barre latérale. Venez y participer ?"/>';
+						}
+						?>	
+						
+					</a>
+				<?php endif; ?>				
+				
+				<a href="javascript:void(0);"><div id="side_arrow" class="s_side_arrow_rgt" onClick="javascript:(this.className == 's_side_arrow_rgt')?minimizeSidebar():defaultSidebar();" title="Etendre ou réduire l'espace bavardages"></div></a>
+				</div>
+				<div id="side_content" class="s_side_content">
+					
+					<font style="font-family:arial;font-weight:bold;color:#666;">::: La barre latérale&nbsp;&nbsp;</font>
+					<a href="javascript:void(0);" onClick="javascript:minimizeSidebar();"><img src="/images/reduire.png" title="Réduire la barre latérale"/></a>
+					<a href="javascript:void(0);" onClick="javascript:maximizeSidebar();"><img src="/images/maximize.png" title="Maximiser la barre latérale"/></a>

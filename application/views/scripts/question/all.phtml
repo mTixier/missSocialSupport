@@ -1,0 +1,16 @@
+<div style="padding: 15px 30px 30px 30px;">
+	<h3>Toutes les questions posées : </h3>
+	
+	<?php
+
+	if($this->qr != null && count($this->qr) > 0){
+		$this->partialLoop()->setObjectKey('model');
+		echo $this->partialLoop("p_qr_sum.phtml", $this->qr);
+	}else{
+	
+		echo "<p style='text-align:center'>Aucune question n'a encore été posée, <a href='".$this->url(array('controller' => 'question', 'action' => 'ask'), 'default', true)."'>Soyez le premier.</a></p>";
+		
+	}
+	?>
+	
+</div>

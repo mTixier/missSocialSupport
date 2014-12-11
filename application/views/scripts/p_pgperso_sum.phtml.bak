@@ -1,0 +1,80 @@
+<?php
+
+if(Zend_Session::namespaceIsset('registred')){
+	$user_session = new Zend_Session_Namespace('registred');
+}else{
+	$user_session = null;
+}
+
+?>
+
+<div id="profil_sum">
+	
+	<div class="f_left" style="padding-right:15px;">
+		<img src="/images/avatar/<?php echo $this->avatar_p['file']; ?>"/>
+		<p class='arial_sml' style='text-align:center'>Dernière visite <br/><?php echo $this->user_p['lastVisit']; ?>.</p>
+		<?php 
+		if($user_session->uname == $this->user_p['uname']){
+			echo "<a href='".$this->url(array('action'=>'changeavatar', 'controller' => 'inscription'),'default',true)."' title='Changer l'image de mon avatar'>Changer d'avatar</a>";
+		}
+		?>
+		
+	</div>
+	
+	<?php if($user_session->uname != $this->user_p['uname']):?>
+		<h4><?php echo $this->user_p['uname']; ?>, <?php echo $this->user_p['city']; ?> (<?php echo $this->user_p['zip']; ?>)</h4>
+	<?php else: ?>
+	
+	<h4><?php echo $this->user_p['uname']; ?><?php echo ($user_session->uname == $this->user_p['uname'] || $user_session->rights == 'admin')?"<a href='javascript:void(0);' id='btn_".$user_session->id."_uname' class='edit_btn' onMouseUp='javascript:editMe(this);'>Editer</a>":"";?></h4>
+
+	<p><font class="arial_b">Ville : </font><font><?php echo $this->user_p['city']; ?><?php echo ($user_session->uname == $this->user_p['uname'] || $user_session->rights == 'admin')?"<a href='javascript:void(0);' id='btn_".$user_session->id."_city' class='edit_btn' onMouseUp='javascript:editMe(this);'>Editer</a>":"";?></font></p> 
+
+	<p><font class="arial_b">Code postal : </font><font><?php echo $this->user_p['zip']; ?><?php echo ($user_session->uname == $this->user_p['uname'] || $user_session->rights == 'admin')?"<a href='javascript:void(0);' id='btn_".$user_session->id."_zip' class='edit_btn' onMouseUp='javascript:editMe(this);'>Editer</a>":"";?></font></p> 
+
+	<?php endif; ?>
+	
+	<p><img src="/images/<?php echo $this->user_p['role']; ?>.png" title="<?php echo ucfirst($this->user_p['role']); ?>"/>
+		<?php 
+			if($this->user_p['role'] == 'aidant'){
+				$role = "J'accompagne un proche qui souffre de troubles de la mémoire.";
+			}else{
+				$role = ucfirst($this->user_p['role']);
+			}
+			echo $role;
+		?></p>
+	<p><font class="arial_b">Devise : </font><font><?php echo $this->user_p['tagLine']; ?>
+	<?php 
+	// Ajout sous conditions du bouton éditer : Attention l'id du bouton est important btn_idContrib_colName - Le champas simple se pace à l'intérieur de la balise à éditer
+	echo ($user_session->uname == $this->user_p['uname'] || $user_session->rights == 'admin')?"<a href='javascript:void(0);' id='btn_".$user_session->id."_tagLine' class='edit_btn' onMouseUp='javascript:editMe(this);'>Editer</a>":""; 
+	?></font></p>
+	
+	<p>Inscrit depuis <?php echo $this->user_p['dateTime']; ?></p>
+	<p>
+	<?php 
+	
+	
+	if(count($this->thm) > 0){
+		$str = "<font class='arial_b'>Aides reçues : </font>";
+		foreach($this->thm as $t){
+			// La requête du lien n'est pertinente que dans la mesure où l'on édite pas les thèmes associés car ils sont enregistré une seule fois au moment de l'inscription... à revoir
+			$str.= "<a href='".$this->url(array('action' => 'index', 'controller' => 'search', 'rqt' => "+contrib_type:".Aloa_Mdl_Tcontribution::NEWMEMBER." +(\"".urlencode($t['name'])))."\")' title='Trouver les autres membres liés au thème ".$t['name'].".'>".$t['name']."</a>, ";
+		}
+		$str = substr($str, 0, strlen($str)-2);
+		echo $str;
+	}
+
+	// Affichage du formulaire d'ajout de thème
+	if(Aloa_Hypertopic_Wrapper::check()){
+
+		if($user_session->uname == $this->user_p['uname'] || $user_session->rights == 'admin'){
+			if(count($this->thm) == 0){
+				echo "Vous n'avez encore mentionné aucune aide particulière.";
+			}
+			echo $this->addthmform;
+		}
+	}
+	
+	?>
+	</p>
+	
+</div>

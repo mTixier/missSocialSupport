@@ -1,0 +1,59 @@
+<div style="padding: 0px 30px 30px 30px;">
+
+	<div><img src="/images/mnu_rt.png" style="float:left;width:150px;padding-right:10px;"/>
+	<div><h3>Témoignages, partage d'expérience</h3>
+	<p>Partagez une anecdote, votre expérience et invitez la communauté à s'exprimer sur un sujet qui vous tient à coeur en lançant un tour de table. Vous pouvez aussi simplement rejoindre un tour de table existant pour partager votre expérience, vos opinions et votre histoire.</p><br/>
+	</div>
+	</div>
+	<p>
+	<h5>Rechercher</h5>
+
+	<p>Rechercher parmi les témoignages des membres de la communauté.</p>
+	<form name="recherche_form" method='post' action="<?php echo $this->url(array('controller'=>'story', 'action' => 'search'),'default',true) ?>">
+	<p><input name="rqt" style="width:300px"/> <input type="submit" value="Rechercher"/></p>
+	
+	</form>
+	</p><br/>
+
+	<div><img src="/images/evt_newrt.png"/><a href="#contribuer">Proposer un nouveau sujet de témoignage</a></div>
+	
+	<div class="evtlist">
+
+			<h4>Les derniers témoignages</h4>
+<!-- par date -->
+				<?php
+				if(count($this->laststories) >0){
+					echo $this->partial("p_contrib_events.phtml", array('contribs' => $this->laststories, 'disp_type' => 0, 'disp_user' => 1));	
+					//print_r($this->noanswer);
+				}else{
+					echo "<p class='arial_sml'>Aucune témoignage n'a encore été posée.<img src='/images/evt_story.png'><a href='#contribuer'>Soyez le premier à participer.</a></p>";
+				}
+				?>
+						
+		</div>
+		
+		<div class="evtlist">
+			<h4>Les sujets de témoignage les plus populaires</h4>
+<!-- quesiton ayant sucité le plus de bavardages + de mise en favoris sur les deux derniers mois -->
+				<?php
+				if(count($this->poptheme) >0){
+					echo $this->partial("p_contrib_events.phtml", array('contribs' => $this->poptheme, 'disp_type' => 0, 'disp_user' => 1));	
+					//print_r($this->noanswer);
+				}else{
+					echo "<p class='arial_sml'>Aucune témoignage n'a encore été posée.<img src='/images/evt_story.png'><a href='#contribuer'>Soyez le premier à participer.</a></p>";
+				}
+				?>
+			
+
+			
+		</div>
+	
+	<a name="contribuer"><img src="/images/evt_newrt.png"/></a><font class="arial_b">Proposer un nouveau sujet de témoigange</font>
+	<div>
+
+	<?php echo $this->action('propose', 'story'); ?>
+
+
+	
+</div>	
+</div>

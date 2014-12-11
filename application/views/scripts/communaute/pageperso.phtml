@@ -1,0 +1,89 @@
+<?php
+
+	if(Zend_Session::namespaceIsset('registred')){
+		$user_session = new Zend_Session_Namespace('registred');
+	}else{
+		$user_session = null;
+	}
+
+
+	if(isset($this->welcome)){
+		echo "<div class='topmsg'>".$this->welcome."</div>";
+	}
+?>
+				
+<div style="padding: 30px 30px 30px 30px;">
+
+				<div id="profil">
+					
+				<?php 
+				$this->user_p['dateTime'] = $this->humanDate($this->user_p['dateTime'], true);
+				$this->user_p['lastVisit'] = $this->humanDate($this->user_p['lastVisit']);
+				echo $this->partial("p_pgperso_sum.phtml", array('user_p' => $this->user_p, 'avatar_p' => $this->avatar,'thm' => $this->thm, 'addthmform' => $this->addthmform)); 
+				
+
+				
+				
+				// Cela n'a pas trop de sens de s'envoyer un mail à soi même
+				if($user_session->id != $this->user_p['id']){
+					echo "<p><img src='/images/evt_newmsg.png'/> <a href='#ecrire'>Envoyer un email à ".$this->user_p['uname']."</a>";
+				}
+				//echo "<br/><img src='/images/fav.png'/> <a href='#'>Marquer comme favoris.</a></p>";
+				?>
+				
+				
+			
+				<div id="profil_ext">
+					
+					<h3>Ma situation</h3>
+<?php if($user_session->id == $this->user_p['id']): ?>
+<p id="give_news"><img src="/images/evt_newcontrib.png"/>&nbsp;<a href="javascript:void(0);" onclick="javascript:changeStyle('give_news_form','visible');changeStyle('give_news','hidden');addRichEditor('nouvelles');">Donner des nouvelles </a></p>
+
+<div id="give_news_form" class="hidden">
+
+<div style="border:2px solid #CCC;padding:5px;">
+<div style="float:right"><a href="javascript:void(0);" onclick="javascript:changeStyle('give_news_form','hidden');changeStyle('give_news','visible');"><img src="/images/suppr.png" title="masquer le formulaire"></a></div>
+<div>
+	<h4>Donner des nouvelles </h4>
+	<?php 
+	
+		echo $this->newsform;
+	
+	?>
+
+</div>
+</div>
+</div>
+<?php endif; ?>
+
+					
+					<?php 
+					$this->partialLoop()->setObjectKey('model');
+					echo $this->partialLoop("p_pgperso_news.phtml", $this->user_news);
+					
+					?>
+
+				
+					<h3>Mes contributions récentes</h3>
+					<div class="evtlist">
+					<?php
+					
+					echo $this->partial("p_contrib_events.phtml", array('contribs' => $this->user_contribs, 'disp_type' => 1, 'disp_user' => 0));
+					
+					?>
+					</div>
+
+					<?php if($user_session->id != $this->user_p['id']): ?>
+					<h3>Ecrire un e-mail à <?php echo $this->user_p['uname']; ?></h3>
+					<div><a name="ecrire"></a>
+					
+						<?php echo $this->mailform; ?>
+					
+					</div>
+					<?php endif; ?>
+				</div>
+				
+				<div class="lrgspc"></div>
+				</div>
+
+</div>

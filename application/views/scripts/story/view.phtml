@@ -1,0 +1,85 @@
+<div style="padding: 0px 30px 30px 30px;">
+
+<p><a href="/story"><< Rechercher parmi d'autres sujets de témoignage</a>
+</p>
+
+<h3><?php echo $this->subject->title; ?></h3>
+
+<p id="ajt_temoignage"><img src="/images/evt_newrt.png"/>&nbsp;<a href="javascript:void(0);" onclick="javascript:changeStyle('temoignage_form','visible');changeStyle('ajt_temoignage','hidden');addRichEditor('userstory');">Je veux témoigner aussi sur ce sujet</a></p>
+
+<div id="temoignage_form" class="hidden">
+
+<div style="border:2px solid #CCC;padding:5px;">
+<div style="float:right"><a href="javascript:void(0);" onclick="javascript:changeStyle('temoignage_form','hidden');changeStyle('ajt_temoignage','visible');"><img src="/images/suppr.png" title="masquer le formulaire"></a></div>
+<div>
+
+	<?php 
+	
+		echo $this->tform;
+	
+	?>
+
+</div>
+</div>
+
+</div>
+
+
+<p>Voir le témoignage <a class="info" href="javascript:void(0)">de : 
+					<span>Cliquer sur l'avatar de l'utilisateur dont vous souhaitez consulter le témoignage.</span></a></p>
+
+	<div id="avatar_selector">
+			
+			<?php foreach($this->usersStories as $ustory):?>
+			
+				<?php 
+					$c_user = $ustory->findParentAloa_Mdl_Tuser(); 
+					$c_avatar = $c_user->findParentAloa_Mdl_Tavatar();
+				?>
+			
+			<a title="Consulter le témoignage : <?php echo $ustory->title; ?> - <?php echo $c_user->uname; ?>" style="cursor:pointer;" href="<?php echo $this->url(array('controller'=>'story', 'action' => 'view', 'storytheme' => $this->sqlifyParam($this->subject->title), 'userstory' => $this->sqlifyParam($ustory->title)),'default',true); ?>">
+			<div id="<?php echo $c_user->uname; ?>" class="avatar_frame<?php echo ($ustory->id == $this->currentStory->id)?"_selected":""; ?>">
+			<div class="fnd_avatar">
+			<img class="img_avatar" src="/images/avatar/<?php echo $c_avatar->file; ?>"/>
+			</div>
+			</div>
+			</a>
+			
+			<?php endforeach; ?>
+			
+
+			<div style="clear:both;"></div>
+	</div>
+
+	<?php
+	
+		$this->partial()->setObjectKey('model');
+		echo $this->partial('p_qr_block.phtml', $this->currentStory); 
+	
+	?>
+	
+	
+	
+
+	
+	<?php
+
+	if($this->messages != null && count($this->messages) > 0){
+		echo "<p><img src='/images/evt_newcontrib.png'/>&nbsp;<a href='#message'>Laisser un message sur ce témoignage</a></p>";
+		$this->partialLoop()->setObjectKey('model');
+		echo $this->partialLoop("p_qr_block.phtml", $this->messages);
+	}
+	?>
+	
+<h4><a name="message"><img src="/images/evt_newcontrib.png"/></a>&nbsp;
+Laisser un message sur ce témoignage :
+</h4>
+
+	<?php echo $this->msgform; ?>
+
+<script type="text/javascript">
+	//appendToEditorList('userstory'); -- Ne fonctionne pas sous FF2
+	appendToEditorList('msg');
+</script>
+	
+</div>

@@ -1,0 +1,11 @@
+<div style="padding: 10px 30px 30px 30px;">
+	
+	<?php
+	if(isset($this->errmsg)){
+		echo "<p><ul class='errors'><li class='arial_sml'>".$this->errmsg."</li></ul></p>";
+	}
+	?>
+	
+	<h3>Questions & Réponses</h3>
+	<?php echo $this->form; ?>
+</div>

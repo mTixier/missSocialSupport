@@ -1,0 +1,106 @@
+/*
+Style pour un petit feedback form :
+
+<!-- Ne fonctionne que sous FF pour faire bouger la fenêtre avec js :) 
+onMouseMove="javascript:document.getElementById('feedback').style.top = ((document.all ? document.documentElement.scrollTop:window.pageYOffset)+80)+'px';"
+-->
+<!--[if lt IE 7]>  <div id="fdbk_IEroot">  <![endif]--> 
+<div id="fdbk" onMouseOut="javascript:slideIn();" onMouseOver="javascript:slideOut();">
+<div id="fdbk_btn"><img src="http://www.orkidees.com/researchpurpose/feedback/images/feedback_btn.png" id="fdbk_btn_img"
+alt="Grâce à ce formulaire vous pouvez nous faire parvenir vos réactions, vos idées, commentaires et critiques afin d'améliorer Aloa."/></div>
+<form id="fdbk_form">
+<input type="hidden" id="fdbk_application" value="aloa"/>
+<p class="fdbk_info">
+Ce petit formulaire vous permet de nous laisser vos critiques, remarques et commentaires.
+<br/>
+Auteur : <input id="fdbk_author" size="50"/><br/>
+<input type="radio" name="fdbk_cat" value="bug" class="fdbk_input"/> Bug <input type="radio" name="fdbk_cat" value="improve" class="fdbk_input"/> Am&eacute;lioration <input type="radio" name="fdbk_cat" value="mispelling" class="fdbk_input"/> Orthographe <input type="radio" name="fdbk_cat" checked="checked" value="other" class="fdbk_input"/> Autre 
+<textarea id="fdbk_content" value=""></textarea><br/>
+<input type="button" value="Envoyer" onMouseUp="javascript:sendData();" onMouseDown="javascript:moment();"/>&nbsp;<input type="reset" value="Effacer"/>&nbsp;
+<input id="fdbk_resp"/><br/>
+<a class="fdbk_link" href="http://www.orkidees.com/researchpurpose/feedback/aloa.xml" target="_blank">Voir l'ensemble des feedbacks</a>
+</p>
+</form>
+</div>
+ <!--[if lt IE 7]>  </div>  <![endif]--> 
+
+
+
+*/
+
+#fdbk{
+position:fixed;
+z-index:945;
+left:-30em;
+top:160px;
+background:url('http://www.orkidees.com/researchpurpose/feedback/images/feedback_fnd.png');
+width:32em;
+padding:0px 0px 0px 40px;
+}
+
+#fdbk_IEroot #fdbk{
+position:absolute;
+z-index:945;
+left:-30em;
+top:160px;
+background:url('http://www.orkidees.com/researchpurpose/feedback/images/feedback_fnd.png');
+width:32em;
+padding:0px 0px 0px 40px;
+}
+
+
+
+#fdbk_btn{
+float:right;
+}
+
+#fdbk_btn_img{
+vertical-align:top;
+}
+
+#fdbk_form{
+padding:8px;
+margin:0px
+}
+
+#fdbk_author{
+width:305px;
+margin-top:5px;
+}
+#fdbk_content{
+height:100px;
+width:360px;
+margin-bottom:3px;
+margin-top:3px;
+}
+
+.fdbk_input{
+margin-top:4px;
+}
+
+.fdbk_info{
+font-family:arial;
+font-size:11pt;
+}
+
+.fdbk_link{
+font-family:arial;
+font-size:8pt;
+color: black;
+margin-top:12px;
+}
+
+#fdbk_resp{
+border:0px;
+width:360px;
+margin-top:4px;
+margin-bottom:4px;
+}
+
+#fdbk_IEroot #fdbk_resp{
+border:0px;
+width:360px;
+margin-top:4px;
+margin-bottom:0px;
+}
+

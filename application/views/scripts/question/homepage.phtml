@@ -1,0 +1,25 @@
+<div class="homepage_block">
+
+			<div class="mnu_block">
+			<a href="<?php echo $this->url(array('controller'=>'question'),'default',true); ?>"><img src="/images/mnu_qr_gnrl.gif" class="mnu_picto"></a>
+					<div class="mnu_pres">
+					<h4><a href="<?php echo $this->url(array('controller'=>'question'),'default',true); ?>">Questions & Réponses</a></h4>
+					<p>Posez ici vos questions à la communauté et partagez vos connaissances, conseils pratiques et astuces pour améliorer le quotidien. Retrouvez également ici toutes les questions posées par les membres d'Aloa. Votre expérience peut apporter beaucoup, n'hésitez pas à proposer vos conseils.</p>
+					
+					
+					<div class="arial_sml_b">Dernière contribution :</div>
+					
+					<?php
+						if($this->lastcontrib->count() > 0){
+							$last = $this->partial("p_contrib_events.phtml", array('contribs' => $this->lastcontrib, 'disp_type' => 0, 'disp_user' => 1));
+						}else{
+							$last = "<p class='arial_sml'>Aucune question n'a encore été posée.<img src='/images/evt_question.png'><a href='".$this->url(array('controller'=>'question', 'action' => 'ask'),'default',true)."'>Soyez le premier à participer.</a></p>";
+						}
+						echo $last;
+					?>
+					
+					
+					</div>
+			</div>
+</div>
+

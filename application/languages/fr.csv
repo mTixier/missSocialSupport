@@ -1,0 +1,17 @@
+isEmpty;Ce champs ne peut être laissé vide.
+notDigits;'%value%' ne doit contenir que des chiffres.
+notAlnum;%value% ne contient pas que des lettres et/ou des chiffres.
+notAlpha;%value% ne doit comporter que des lettres.
+notBetween;%value% n'est pas compris entre %min% et %max% inclus.
+notBetweenStrict;%value% n'est pas compris entre %min% et %max% exclus.
+recordFound;'%value%' est déjà pris par un autre utilisateur.
+emailAddressInvalid;L'adresse email '%value%' est mal formée, exemple : nom.prenom@hostname.fr
+emailAddressInvalidFormat;L'adresse email '%value%' est mal formée, exemple : nom.prenom@hostname.fr
+emailAddressInvalidHostname;L'adresse email est mal formée, exemple : nom.prenom@hostname.fr
+emailAddressInvalidMxRecord;L'adresse email est mal formée, exemple : nom.prenom@hostname.fr
+emailAddressInvalidDotAtom;L'adresse email est mal formée, exemple : nom.prenom@hostname.fr
+emailAddressInvalidQuotedString;L'adresse email est mal formée, exemple : nom.prenom@hostname.fr
+emailAddressInvalidLocalPart;L'adresse email est mal formée, exemple : nom.prenom@hostname.fr
+stringLengthTooLong;'%value%' est trop long : %max% caractères au maximum.
+stringLengthTooShort;'%value%' est trop court : %min% caractères au minimum.
+notSame;'%token%' n'est pas identique à '%value%'.

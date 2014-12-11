@@ -1,0 +1,90 @@
+<?php
+
+if(Zend_Session::namespaceIsset('registred')){
+	$user_session = new Zend_Session_Namespace('registred');
+}else{
+	$user_session = null;
+}
+
+//$refdoc = $this->model->findParentAloa_Mdl_Tdocument();
+
+$tdoc = new Aloa_Mdl_Tdocument();
+$refdoc = $tdoc->getByContribId($this->model->id);
+$user = $this->model->findParentAloa_Mdl_Tuser();
+// En fait il s'agit d'une référence à l'auteur de la contribution et pas à l'utilisateur courant...
+ ?>
+
+<div class="doc_block">
+		<a name="<?php echo $this->model->id; ?>"></a>
+		<div class="doc_pres">
+		<div class="doc_apercu">
+	<a href="<?php echo $refdoc->url; ?>" title="Consulter le document" target="_blank"><img src="/images/mnu_doc.png"/></a>
+	</div>
+		<h4><?php echo $this->model->title; ?></h4>
+		<div class="arial">ajouté <?php echo $this->humanDate($this->model->dateTime); ?>, par <?php echo $this->partial("p_userinfo_decorator.phtml", array('base' => $user->uname, 'user' => $user)); ?></div>
+		
+		
+		<p><font class="arial_b">Description : </font>
+		<div id="<?php echo $this->model->id."_content";?>">
+			<p><?php echo $this->model->content; ?></p>
+			</div><?php if($user_session != null){
+							echo ($user_session->id == $this->model->author_id || $user_session->rights == 'admin')?"<a href='javascript:void(0);' id='btn_".$this->model->id."_content' class='edit_btn' onMouseUp='javascript:editMeRichVersion(this);'>Editer</a>":""; 
+							// Ajout sous conditions du bouton éditer : Attention l'id du bouton est important btn_idContrib_colName	- le bouton doit être le frère direct (et vraiment direct, pas de sauts de lignes!!!) du block à éditer pour le richEditor 
+						}
+					?>
+		</p>
+		
+		<?php if(Aloa_Hypertopic_Wrapper::check()): ?>
+		<p>
+			<font class="arial_b">Thème(s) : </font>
+			<?php
+				//$sqlttl = $this->sqlifyParam($this->model->title);
+				$ent_id = $this->model->type.'_'.$this->model->id;
+				$uri = Aloa_Hypertopic_Wrapper::getArgosUrl()."/entity/".$ent_id;
+				$ent = Aloa_Hypertopic_Wrapper::__callStatic('getEntity', array($uri));
+				$ctvpt = Aloa_Hypertopic_Wrapper::getCommunityViewpoint();
+				
+				foreach($ent->topics as $t){
+					// Filtre pour ne garder que les thèmes issue du CommunityViewpoint
+					if(strpos($t['uri'], $ctvpt->uri) !== false){
+						$thm_link = "<a title='Consulter les autres documents du thème : \"".$t['name']."\"' href='".$this->url(array('action'=>'theme', 'controller' => 'document', 'theme_id' => $t['topicid']),'default',true)."'>".$t['name']."</a>";
+						
+						// Suppression du thème si les droits sont valides  -- On rappelle la construction des identifiant des entités pour contributions : type_id
+						if($user_session != null){
+							if($user_session->id == $this->model->author_id || $user_session->rights == 'admin'){
+								$thm_link .= "&nbsp;<a href='".$this->url(array('action'=>'detachthemefromentity', 'controller' => 'hypertopic', 'entity_id' => $this->model->type."_".$this->model->id,'theme_id' => $t['topicid'], 'vpt_id' => $ctvpt->viewpointId),'default',true)."' title='Retirer le document \"".$this->model->title."\" du thème ".$t['name']."'><img src='/images/suppr.png' /></a>";
+							}
+						}
+						
+						$thm_link .= "&nbsp;&nbsp;";
+						echo $thm_link;
+					}
+				}
+				
+				// Ajouter un  thème
+				if($user_session != null){
+					if($user_session->id == $this->model->author_id || $user_session->rights == 'admin'){
+						// Formulaire d'ajout de thèmes -- On rappelle la construction des identifiant des entités pour contributions : type_id
+						$urootThm = Aloa_Hypertopic_Wrapper::getUsersRootTheme();
+						$thmfrm = new Aloa_Form_Addtheme($this->model->type."_".$this->model->id, "Ajouter un thème", $ctvpt->topics, "Non classé");
+						echo $thmfrm->getView();
+					}
+				}
+				
+			?>
+		
+		</p>
+		<?php endif; ?>
+		
+		<p><a href="<?php echo $refdoc->url; ?>" target="_blank">Consulter le document</a></p>
+		</div>
+		
+		<div class="doc_mnu">
+			<?php if($user_session->id != $this->model->author_id): ?>
+				<div class="f_left"><a href="<?php echo ($user_session != null)?"javascript:popupGiftInit('".$user->uname."','".$this->model->id."');":"javascript:popup('giftPopUp');"; ?>" title="Offrir une part de gâteau à <?php echo $user->uname; ?>" class="cake_set"></a></div>
+			<?php endif; ?>
+			
+			<!-- <div class="f_left"><a href="javascript:popup('favPopUp');" title="Marquer comme favoris" class="fav_set"></a></div> -->
+				<div class="f_left"><a href="<?php echo ($user_session != null)?"javascript:popupAdviceInit('".$this->model->id."');":"javascript:popup('advicePopUp');"; ?>" title="Marquer comme conseil pratique" class="advice_set"><span id="<?php echo "nbUpCntr_".$this->model->id; ?>" style="padding-left:35px;"><?php echo $this->model->nbUp;?></span></a></div>	
+		</div>
+</div>

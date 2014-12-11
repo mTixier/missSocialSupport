@@ -1,0 +1,86 @@
+<?php
+class Aloa_Form_Addtheme{
+
+	protected $_view;
+	protected $title;
+	protected $contrib_id;
+	protected $id;
+	protected $suggestionsList = array();
+
+	
+
+	public function __construct($cid, $ttl, $suggestion, $filter = null){
+		
+		// Filtre sur les noms
+		if($filter != null){
+			if(!is_array($filter)){
+				$filter = array($filter);
+			}else{
+				foreach($suggestion as $t){
+					if(!in_array($t['name'], $filter)){
+						$this->suggestionsList[] = $t;
+					}
+				}
+			}
+			
+		}else{
+			$this->suggestionsList = $suggestion;
+		}
+		
+		$this->contrib_id = $cid;
+		$this->id = "addtheme_".$cid;
+		$this->title = $ttl;
+		
+	}
+
+	public function getView(){
+	
+		$jscript = $this->makeSuggestion($this->suggestionsList);
+		
+		$frm = "<form action='/hypertopic/attachtheme2entity/cid/".$this->contrib_id."' method='post'>";
+		
+		$frm .= "<div style='font-size:11pt'><div class='ui-widget'>
+					<!--<label for='".$this->id."'> ".$this->title." : </label>-->
+					<img src='/images/add.png' style='vertical-align:top;padding: 6px 5px 0px 0px;' title='".$this->title."'>
+					<input id='".$this->id."' name='".$this->id."'>
+					<input id='".$this->id."_id' type='hidden' name='".$this->id."_id'>
+					<input type='submit' value='".$this->title."'/>
+				</div></div>";
+		
+		
+		$frm .= "</form>";
+	
+		$this->_view = $jscript."\n".$frm;
+	
+		return $this->_view;
+	}
+	
+	protected function makeSuggestion($suggestion){
+	// Formate la liste de thème à prendre en compte pour l'autocomplétion, avec le code javascript nécessaire
+		$slist = "";
+		
+		foreach($suggestion as $t){
+			$slist .= "{id : '".$t['topicid']."', value : '".$t['name']."'},";
+		}
+	
+		$code = "<script type='text/javascript'>
+					$(function() {
+						var ".$this->id."_list = [".$slist."];
+						$('#".$this->id."').autocomplete({
+							source: ".$this->id."_list,
+							select: function(event, ui) {
+								$('#".$this->id."_id').val(ui.item.id);
+								$('#".$this->id."').val(ui.item.value);
+								return false;
+							}
+						});
+					});
+				</script>";
+		
+		return $code;
+	}
+	
+}
+
+
+?> 

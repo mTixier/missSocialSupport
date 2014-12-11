@@ -1,0 +1,123 @@
+<?php
+// usage : $this->partial("p_search_results.phtml", array('contribs' => $this->user_contribs, 'disp_type' => 1, 'disp_user' => 0));
+
+// Modalisateur pour décider de l'afficahge de l'icône du type d'evt et de la miniature de l'utilisateur.
+
+$idx = 0;
+$tcontrib = new Aloa_Mdl_Tcontribution();
+$tuser = new Aloa_Mdl_Tuser();
+
+?>
+
+
+<?php foreach($this->results as $r):?>
+
+	<?php 
+	
+	$idx++;
+	$user = $tuser->find($r['author_id'])->current(); 
+	
+	?>
+
+		<div class="evt<?php echo ($idx%2 == 0)?"_b":""; ?>">
+		
+						<p>
+
+						<?php 
+							//nom de l'auteur avec infobulle
+							$userref = $this->partial("p_userinfo_decorator.phtml", array('base' => $user->uname, 'user' => $user)); 
+							// date de l'évènement/contribution
+							$contribdate = $this->humanDate($r['dateTime']);
+						?>
+						
+						<span class="evt_type">
+						<!-- Affichage du type de contribution -->
+						<?php if($this->disp_type): ?>
+							<img src="/images/evt_<?php echo $r['type'].".png"; ?>">
+						<?php endif ?>
+						
+						<!-- Affichage de l'avatar de l'auteur -->
+						<?php if($this->disp_user): ?>
+							<?php $avtr = $user->findParentAloa_Mdl_Tavatar(); ?>
+							<img src="/images/avatar/<?php echo $avtr->file; ?>" class="sml_avtr"/>&nbsp;
+						<?php endif ?>
+						</span>
+						
+						<!-- Message en fonction du type de contribution -->
+						<?php
+						$msg = implode(",",$r);
+						/*
+						switch($r['type']){
+						
+						case Aloa_Mdl_Tcontribution::NEWMEMBER:
+							$msg = $userref."vient de s'inscrire. <a href='".$this->url(array('controller'=>'communaute', 'action' => 'pageperso', 'uname' => $user->uname),'default',true)."#ecrire'>Lui-souhaiter la bienvenue ?</a>, $contribdate";
+							break;
+						
+						case Aloa_Mdl_Tcontribution::NEWS:
+							$msg = $userref."a donné des nouvelles sur sa page personnelle, $contribdate : ";
+							if($c->title != null){
+								$msg.= "<a href='".$this->url(array('controller'=>'communaute', 'action' => 'pageperso', 'uname' => $user->uname),'default',true)."#".$c->id."'>".$c->title."</a>";
+							}else{
+								$msg.= "<a href='".$this->url(array('controller'=>'communaute', 'action' => 'pageperso', 'uname' => $user->uname),'default',true)."#".$c->id."'>En savoir plus.</a>";
+							}
+							break;
+							
+						case Aloa_Mdl_Tcontribution::PUBLICNEWS:
+							$msg = $userref."a donné des nouvelles sur sa page personnelle, $contribdate : ";
+							if($c->title != null){
+								$msg.= "<a href='".$this->url(array('controller'=>'communaute', 'action' => 'pageperso', 'uname' => $user->uname),'default',true)."#".$c->id."'>".$c->title."</a>";
+							}
+							break;
+							
+						case Aloa_Mdl_Tcontribution::DOCUMENT:
+							$msg = $userref." a déposé un document : <a href='".$this->url(array('controller'=>'document', 'action' => 'view', 'title' => $this->sqlifyParam($c->title)),'default',true)."'>".$c->title."</a>, $contribdate.";
+							break;
+							
+						case Aloa_Mdl_Tcontribution::QUESTION:
+							// Récupération du nb de réponses
+							$tcontrib = new Aloa_Mdl_Tcontribution();
+							$select = $tcontrib->select()->from(array('r' => 'contribution'), array('nbRps' => 'COUNT(1)'))->where('type = ?', Aloa_Mdl_Tcontribution::ANSWER)->where('parent_id = ?', $c->id);
+							$row = $tcontrib->fetchRow($select);
+							$nbrpns = $row->nbRps;
+							
+							$msg = $userref." a posé une question : <a href='".$this->url(array('controller'=>'question', 'action' => 'view', 'title' => $this->sqlifyParam($c->title)),'default',true)."'>".$c->title."</a>, $contribdate - <a href='".$this->url(array('controller'=>'question', 'action' => 'view', 'title' => $this->sqlifyParam($c->title)),'default',true)."'>".$nbrpns." réponse(s)</a>";
+							break;
+							
+						case Aloa_Mdl_Tcontribution::ANSWER:
+							$question = $c->findParentAloa_Mdl_Tcontribution()->title;
+							$msg = $userref." a proposé une réponse à : <a href='".$this->url(array('controller'=>'question', 'action' => 'view', 'title' => $this->sqlifyParam($question)),'default',true)."#".$c->id."'>".$question.",</a> $contribdate.";
+							break;
+							
+						case Aloa_Mdl_Tcontribution::STORYTHEME:
+							$nbStory = count($c->findAloa_Mdl_Tcontribution());
+							$msg = $userref." a lancé un nouveau sujet de témoignage : <a href='".$this->url(array('controller'=>'story', 'action' => 'view', 'storytheme' => $this->sqlifyParam($c->title)),'default',true)."'>".$c->title."</a> - <a href='".$this->url(array('controller'=>'story', 'action' => 'view', 'storytheme' => $this->sqlifyParam($c->title)),'default',true)."'>".$nbStory." participants</a>, $contribdate.";
+							break;
+							
+						case Aloa_Mdl_Tcontribution::USERSTORY:
+							$subject = $c->findParentAloa_Mdl_Tcontribution();
+							$msg = $userref." a écrit un témoignage : <a href='".$this->url(array('controller'=>'story', 'action' => 'view', 'storytheme' => $this->sqlifyParam($subject->title), 'userstory' => $this->sqlifyParam($c->title)),'default',true)."'>".$c->title."</a> sur le sujet : <a href='".$this->url(array('controller'=>'story', 'action' => 'view', 'storytheme' => $this->sqlifyParam($subject->title)),'default',true)."'>".$subject->title."</a>, $contribdate.";
+							break;
+							
+						case Aloa_Mdl_Tcontribution::REACTION:
+							$story = $c->findParentAloa_Mdl_Tcontribution();
+							$subject = $story->findParentAloa_Mdl_Tcontribution();
+							$msg = $userref." a laissé un message à propos du témoignage : <a href='".$this->url(array('controller'=>'story', 'action' => 'view', 'storytheme' => $this->sqlifyParam($subject->title), 'userstory' => $this->sqlifyParam($story->title)),'default',true)."#".$c->id."'>".$story->title."</a>, $contribdate.";
+							break;
+							
+						case Aloa_Mdl_Tcontribution::CHAT:
+							$msg = $userref." a fait ".$c->type.", $contribdate.";
+							break;
+						
+						default:
+							$msg = $r['content'];
+						}
+						*/
+						echo $msg;
+						
+						?>
+						
+
+						</p>
+					</div>
+
+<?php endforeach ?>

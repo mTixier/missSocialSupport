@@ -1,0 +1,50 @@
+<div style="padding: 0px 30px 30px 30px;">
+
+	<h3>Résultat(s) de la recherche : <em><?php echo $this->request; ?></em></h3>
+	
+
+			<?php
+			
+			
+				if(count($this->results) >0){
+					
+					echo "<h4>".count($this->results)." contribution(s) trouvée(s) : </h4><br/>";
+					echo "<div class='evtlist'>";
+					echo $this->partial("p_contrib_events.phtml", array('contribs' => $this->results, 'disp_type' => 1, 'disp_user' => 1));	
+					echo "</div>";
+				
+				}else{
+					if(isset($this->errmsg)){
+					
+						echo "<p>Notre moteur de recherche n'est pas parvenu à traiter votre requête : <p>".$this->errmsg."</p> 
+						
+						<p>Nous vous proposons :";
+					
+					}else{
+					
+						echo "<p>Notre moteur de recherche n'a trouvé aucun résultats correspondant à votre requête. 
+						
+						<p>Nous vous proposons :
+						
+						<p><img src='/images/evt_question.png'><a href='".$this->url(array('controller'=>'question', 'action' => 'ask'),'default',true)."'>De faire appel aux connaissances de la communauté en posant une question sur ce sujet.</a>
+						</p>
+						
+						<p><img src='/images/evt_story.png'><a href='".$this->url(array('controller'=>'story'),'default',true)."#contribuer'>De partager votre expérience sur ce sujet et de lancer un appel à témoin.</a>
+						</p>";
+						
+					}
+					
+					echo "
+					<p>&nbsp;&nbsp;&nbsp;<img src='/images/loupe.png'>&nbsp;&nbsp;&nbsp;De modifier votre requête et de tenter une nouvelle recherche :
+					<form style='display:inline;padding-left:15px;' id='search_form' action='".$this->url(array('controller'=>'search', 'action'=>'index'),'default',true)."' method='post'><font class='arial'> Rechecher :</font>&nbsp;
+					<input name='rqt'/><input type='submit' value='Rechercher'/></form>
+					</p>
+					
+					</p>
+					</p>";
+				}
+
+			?>
+	
+	
+</div>

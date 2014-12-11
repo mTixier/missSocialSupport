@@ -1,0 +1,25 @@
+<div style="padding: 10px 30px 30px 30px;">
+	
+	<?php
+	if(isset($this->errmsg)){
+		echo "<p><ul class='errors'><li class='arial_sml'>".$this->errmsg."</li></ul></p>";
+	}
+	?>
+	<h3> Changer l'image de mon avatar </h3>
+	
+	<?php 
+		if(Zend_Session::namespaceIsset('registred')){
+		
+			$user_session = new Zend_Session_Namespace('registred');
+			
+			$selected = isset($user_session->avatar_id)?'avtr_'.$user_session->avatar_id:'avtr_2';
+								
+			//print_r($this->avatars); 
+			echo $this->partial("p_avatar.phtml", array("avatars" => $this->avatars, "selected" => $selected)); 
+		
+			echo $this->form;
+		}
+	
+	?>
+
+</div>

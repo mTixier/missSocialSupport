@@ -1,0 +1,57 @@
+<?php
+if($this->question != null){
+	$uname = $this->question->findParentAloa_Mdl_Tuser()->uname;
+}else{
+	throw new Exception('Paramètres incorrects.');
+}
+?>
+
+<div style="padding: 0px 30px 30px 30px;">
+
+<p><a href="/question"><< Rechercher parmi les autres questions</a>
+</p>
+
+	<?php
+	
+		$this->partial()->setObjectKey('model');
+		echo $this->partial('p_qr_block.phtml', $this->question); 
+	
+	?>
+	
+
+	
+<br/>
+	<div><img src="/images/evt_newqr.png">  <a href="#repondre">Répondre à <?php echo $uname; ?></a></div>
+	
+	<h5>Les réponses proposées :</h5>
+	<?php
+
+	if($this->answer != null && count($this->answer) > 0){
+		$this->partialLoop()->setObjectKey('model');
+		echo $this->partialLoop("p_qr_block.phtml", $this->answer);
+	}else{
+	
+		echo "<p style='text-align:center'>Personne n'a encore proposé de réponses pour $uname... <a href='#repondre'>Soyez le premier.</a></p>";
+	}
+	?>
+	
+	<div><a name="repondre"><img src="/images/evt_newqr.png"></a><font class="arial_b">&nbsp;Proposer une réponse :</font>
+	
+	<!--
+	<form>
+	<p>
+	Votre message : <br/><textarea style="width:380px;height:120px;">
+	</textarea></p>
+	<input type="submit" value="Envoyer"/>
+	</form>
+	-->
+	<?php
+	echo $this->rps_form;
+	?>
+<script type="text/javascript">
+	appendToEditorList('msg');
+</script>		
+	</div>
+
+</div>
+

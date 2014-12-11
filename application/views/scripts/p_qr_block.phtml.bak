@@ -1,0 +1,59 @@
+<?php
+
+if(Zend_Session::namespaceIsset('registred')){
+	$user_session = new Zend_Session_Namespace('registred');
+}else{
+	$user_session = null;
+}
+
+$user = $this->model->findParentAloa_Mdl_Tuser();
+
+// Déterminer si l'auteur à le rôle de professionnel ou non pour modifier le fond du block
+
+ ?>
+
+ 
+ <div class="qr<?php echo ($user->role == 'professionnel')?"_pro":""; ?>">
+		<a name="<?php echo $this->model->id; ?>"></a>
+		<div class="qr_profil_rsm">
+			<div class="f_left" style="padding-bottom:1px;">
+			<font class="arial_b"><img src="/images/<?php echo $user->role; ?>.png" title="<?php echo ucfirst($user->role); ?>"><?php echo $user->uname; ?></font><br/> 
+			<a href="<?php echo $this->url(array('controller'=>'communaute', 'action' => 'pageperso', 'uname' => $user->uname),'default',true); ?>" title="Consulter la page de <?php echo $user->uname; ?>"><img src="/images/avatar/<?php echo $user->findParentAloa_Mdl_Tavatar()->file; ?>" class="avtr_trombi"/></a>
+
+			<p class="arial_b"><?php echo $user->city." (".$user->zip.")"; ?><br/>inscrit depuis <?php echo $this->humanDate($user->dateTime, true); ?></p>
+			</div>
+			<div class="c_left"></div>
+			<div class="fav_contrib_mnu_lft">
+				
+								<?php if($user_session != null && $user_session->id != $this->model->author_id): ?>
+									<div class="f_left"><a href="<?php echo ($user_session != null)?"javascript:popupGiftInit('".$user->uname."','".$this->model->id."');":"javascript:popup('giftPopUp');"; ?>" title="Offrir une part de gâteau à <?php echo $user->uname; ?>" class="cake_set"></a></div>
+								<?php endif; ?>
+				<!--<div class="f_left"><a href="javascript:popup('favPopUp');" title="Marquer comme favoris" class="fav_set"></a></div>-->
+				<div class="f_left"><a href="<?php echo ($user_session != null)?"javascript:popupAdviceInit('".$this->model->id."');":"javascript:popup('advicePopUp');"; ?>" title="Marquer comme conseil pratique" class="advice_set"><span id="<?php echo "nbUpCntr_".$this->model->id; ?>" style="padding-left:35px;font-size:11pt;"><?php echo $this->model->nbUp;?></span></a></div>		
+			</div>
+
+		</div>
+		<div class="qr_content">	
+		
+		<?php 
+		if($this->model->title != null){
+			echo "<font class='arial_b'>";
+			echo $this->model->title; 
+			echo "</font><br/>";
+		}
+		?>
+			<font class="arial">de <?php echo $this->partial("p_userinfo_decorator.phtml", array('base' => $user->uname, 'user' => $user)); ?>, <?php echo $this->humanDate($this->model->dateTime); ?></font>
+
+			<p>
+			<div id="<?php echo $this->model->id."_content";?>">
+				<p><?php echo $this->model->content; ?></p>
+			</div><?php if($user_session != null){
+							echo ($user_session->id == $this->model->author_id || $user_session->rights == 'admin')?"<a href='javascript:void(0);' id='btn_".$this->model->id."_content' class='edit_btn' onMouseUp='javascript:editMeRichVersion(this);'>Editer</a>":""; 
+							// Ajout sous conditions du bouton éditer : Attention l'id du bouton est important btn_idContrib_colName	- le bouton doit être le frère direct (et vraiment direct, pas de sauts de lignes!!!) du block à éditer pour le richEditor 
+						}
+					?>
+		</p>
+		</div>
+	
+</div>
+

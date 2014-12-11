@@ -1,0 +1,47 @@
+<div style="padding: 0px 30px 30px 30px;">
+
+	<h3> Résultats de la recherche : <em><?php echo $this->rqt; ?></em></h3>
+
+	
+		<?php
+		if(count($this->results) >0){
+					
+			echo "<h4>".count($this->results)." contributions trouvées. </h4><br/>";
+			
+			echo "<div class='evtlist'>";
+			$tcontrib = new Aloa_Mdl_Tcontribution();
+			$key = Aloa_Mdl_Tcontribution::SEARCH_ENGINE_PREFIX . 'id'; 
+			foreach($this->results as $hit){
+				$row = $tcontrib->find($hit->$key)->current();
+				
+				echo $this->partial("p_contrib_events.phtml", array('contribs' => array($row), 'disp_type' => 1, 'disp_user' => 1));
+				
+				//echo $hit->score;
+				
+			}
+			echo "</div>";
+			
+		}else{
+			echo "<p>Notre moteur de recherche n'a pas trouvé de contribution correspondant à votre requête. 
+					<p>Nous vous proposons :
+					
+					<p><img src='/images/evt_question.png'><a href='".$this->url(array('controller'=>'question', 'action' => 'ask'),'default',true)."'>De faire appel aux connaissances de la communauté en posant une question sur ce sujet.</a>
+					</p>
+					
+					<p><img src='/images/evt_story.png'><a href='".$this->url(array('controller'=>'story'),'default',true)."#contribuer'>De partager votre expérience sur ce sujet et de lancer un appel à témoin.</a>
+					</p>					
+					
+					<p>&nbsp;&nbsp;&nbsp;<img src='/images/loupe.png'>&nbsp;&nbsp;&nbsp;De modifier votre requête et de tenter une nouvelle recherche :
+					<form style='display:inline;padding-left:15px;' id='search_form' action='".$this->url(array('controller'=>'search', 'action'=>'index'),'default',true)."' method='post'><font class='arial'> Rechecher :</font>&nbsp;
+					<input name='rqt'/><input type='submit' value='Rechercher'/></form>
+					</p>
+					
+					</p>
+					</p>";
+		}
+		
+		echo "<p><a href='".$this->url(array('controller'=>'communaute'),'default',true)."'><< Retour</a></p>";
+
+		?>
+	
+</div>

@@ -1,0 +1,24 @@
+<div class="homepage_block">
+
+			<div class="mnu_block">
+			<a href="<?php echo $this->url(array('controller'=>'document'),'default',true); ?>"><img src="/images/mnu_doc.gif" class="mnu_picto"></a>
+					<div class="mnu_pres">
+					<h4><a href="<?php echo $this->url(array('controller'=>'document'),'default',true); ?>">S'informer</a></h4>
+					<p>La bibliothèque Aloa vous permet de partager les sites webs et documents qui vous ont été utiles. En ouvrant la barre latérale vous pouvez discuter avec les membres de la communauté et laisser vos commentaires et impressions sur les documents.</p>
+					
+					
+					<div class="arial_sml_b">Dernière contribution :</div>
+						
+						<?php
+						if($this->lastcontrib->count() > 0){
+							$last = $this->partial("p_contrib_events.phtml", array('contribs' => $this->lastcontrib, 'disp_type' => 0, 'disp_user' => 1));
+						}else{
+							$last = "<p class='arial_sml'>Aucun document n'a encore été proposé.<img src='/images/evt_document.png'><a href='".$this->url(array('controller'=>'document', 'action' => 'index'),'default',true)."#proposer'>Soyez le premier à participer.</a></p>";
+						}
+						echo $last;
+						?>
+						
+					</div>
+			</div>
+</div>
+

@@ -1,0 +1,70 @@
+﻿<div style="padding: 15px 30px 0px 30px;">
+			<div>
+			
+			<?php 
+			if(Zend_Session::namespaceIsset('registred')){
+				$user_session = new Zend_Session_Namespace('registred');
+			}
+			?>
+			
+			<?php if(isset($user_session->uname)): ?>
+			<div id="actu">
+					<h4>L'actualité d'Aloa <!--- <a href="#" class="arial_sml">Consulter toutes les actualités</a>--></h4>
+					
+					<?php 
+						echo $this->partial("p_contrib_events.phtml", array('contribs' => $this->actu, 'disp_type' => 1, 'disp_user' => 1));
+					?>
+			</div>
+			
+			
+			<?php endif ?>
+
+<!-- Trombinoscopte-->
+			
+			<h3 style="margin-top:5px">Bienvenue sur Aloa </h3>
+						<p>Cet espace de rencontres et de discussions est dédié à tous ceux qui accompagnent un proche souffrant de troubles de la mémoire ou qui se sentent concernés par cette situation.</p>
+			
+			
+<!-- et <a href="<?php //echo $this->url(array('controller'=>'communaute', 'action' => 'inscription'),'default',true); ?>">nous rejoindre</a>.</p>-->
+			<!--<div style="margin:0px;padding: 0px 5px 5px 5px;">-->
+			
+			
+			<?php if(isset($user_session->uname)): ?>
+			
+			<p>Faîtes connaissance avec les membres d'Aloa. Vous pouvez tous les retrouver <a href="<?php echo $this->url(array('controller'=>'communaute', 'action' => 'index'),'default',true); ?>">ici</a>.<br/><br/><br/></p>
+			
+		<div class="evtlist"><h4>Derniers inscrits :</h4>
+			<div id="trombinoscope">
+				
+				<?php
+				
+				$this->partialLoop()->setObjectKey('model');
+				echo $this->partialLoop("p_trombinoscope.phtml", $this->lastusers);
+				
+				?>
+
+				<div class="c_left"></div>
+			</div>
+		</div>
+			<?php else: ?>
+
+			<p>Faîtes connaissance avec les membres d'Aloa au travers de leurs contrbutions sur le site et <a href="<?php echo $this->url(array('controller'=>'inscription', 'action' => 'index'),'default',true); ?>">rejoingez-nous</a> : 
+			
+				<h4><a href="<?php echo $this->url(array('controller'=>'inscription', 'action' => 'index'),'default',true); ?>"><img src="images/evt_newmember.png"> Pour vous inscrire, cliquez ici</a></h4></p>
+			
+			<?php endif ?>				
+			<!--</div>-->
+<!--  FIN Trombinoscope -->
+			</div>
+			
+			<div class="c_left"></div>
+			<?php if($this->print_advices):?>
+			<!-- N'afficher que s'il y en a qq 1, au moins 5 -->
+			
+			<h4><img src="/images/conseil.png" style="padding-bottom:7px"><a href="<?php echo $this->url(array('controller'=>'communaute'),'default',true); ?>#advices">Retrouvez tous les conseils pratiques de la communauté.</a></h4>
+			<?php endif; ?>
+			
+			<h3>Que fait-on sur Aloa ? </h3>
+			
+</div>
+				
